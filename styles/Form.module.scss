@@ -1,0 +1,31 @@
+@import "_variables.scss";
+
+.containerForm {
+  width: 100%;
+  display: contents;
+
+  label {
+    color: $primary-color;
+    margin-top: 10px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+  }
+
+  button {
+    margin-top: 25px;
+    background-color: $primary-color;
+    color: black;
+    border-radius: 8px;
+    height: 40px;
+  }
+
+  input {
+    background-color: black;
+    border: 2px solid $primary-color;
+    border-radius: 8px;
+    height: 40px;
+  }
+}
