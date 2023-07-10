@@ -1,5 +1,8 @@
-import styles from '../styles/Home.module.scss'
-import FormCreateAccount from "../components/FormCreateAccount";
+import { useEffect } from "react";
+
+import styles from "../styles/Home.module.scss";
+import SignIn from "../components/SignIn";
+
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -11,7 +14,8 @@ export default function Home() {
         <h2>Get Started Free</h2>
         <p>Free Forever. No Credit Card Needed</p>
       </div>
-      <FormCreateAccount />
+
+      <SignIn />
     </div>
   );
 }

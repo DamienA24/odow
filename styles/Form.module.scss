@@ -2,7 +2,7 @@
 
 .containerForm {
   width: 100%;
-  display: contents;
+  text-align: center;
 
   label {
     color: $primary-color;
@@ -20,6 +20,10 @@
     color: black;
     border-radius: 8px;
     height: 40px;
+    width: 80%;
+    font-family: "Poppins";
+    font-weight: 500;
+    border: none;
   }
 
   input {
@@ -27,5 +31,6 @@
     border: 2px solid $primary-color;
     border-radius: 8px;
     height: 40px;
+    color: $third-color;
   }
 }
