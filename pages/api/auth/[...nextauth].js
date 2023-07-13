@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default NextAuth({
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     // OAuth authentication providers
@@ -20,4 +20,6 @@ export default NextAuth({
       return true;
     },
   },
-});
+};
+
+export default NextAuth(authOptions);
