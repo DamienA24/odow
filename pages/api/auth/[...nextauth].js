@@ -22,4 +22,8 @@ export const authOptions = {
   },
 };
 
-export default NextAuth(authOptions);
+const authHandler = NextAuth(authOptions);
+
+export default async function handler(...params) {
+  await authHandler(...params);
+}
