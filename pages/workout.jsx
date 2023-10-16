@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
-import UnAuthenticated from "../components/UnAuthenticated";
 import { useRouter } from "next/router";
 
 export default function Workout() {
