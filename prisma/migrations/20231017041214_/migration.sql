@@ -101,15 +101,6 @@ CREATE TABLE `Session` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Subscriptions` (
-    `id` VARCHAR(191) NOT NULL,
-    `workoutId` INTEGER NOT NULL,
-
-    INDEX `workoutId`(`workoutId`),
-    PRIMARY KEY (`id`, `workoutId`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `User` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
@@ -135,6 +126,34 @@ CREATE TABLE `UserMetrics` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `UserWorkoutProgress` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userWorkoutSessionId` INTEGER NOT NULL,
+    `roundId` INTEGER NOT NULL,
+    `exerciseId` INTEGER NOT NULL,
+    `startedAt` DATETIME(0) NOT NULL,
+    `completedAt` DATETIME(0) NULL,
+
+    INDEX `exerciseId`(`exerciseId`),
+    INDEX `roundId`(`roundId`),
+    INDEX `userWorkoutSessionId`(`userWorkoutSessionId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `UserWorkoutSessions` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` VARCHAR(191) NOT NULL,
+    `workoutId` INTEGER NOT NULL,
+    `startDate` DATETIME(0) NOT NULL,
+    `endDate` DATETIME(0) NULL,
+
+    INDEX `userId`(`userId`),
+    INDEX `workoutId`(`workoutId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `VerificationToken` (
     `identifier` VARCHAR(191) NOT NULL,
     `token` VARCHAR(191) NOT NULL,
@@ -148,9 +167,11 @@ CREATE TABLE `VerificationToken` (
 CREATE TABLE `WorkoutRounds` (
     `workoutId` INTEGER NOT NULL,
     `roundId` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
 
     INDEX `roundId`(`roundId`),
-    INDEX `workoutId`(`workoutId`)
+    INDEX `workoutId`(`workoutId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -189,16 +210,25 @@ ALTER TABLE `RoundExercises` ADD CONSTRAINT `roundexercises_ibfk_2` FOREIGN KEY 
 ALTER TABLE `Session` ADD CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Subscriptions` ADD CONSTRAINT `subscriptions_ibfk_1` FOREIGN KEY (`id`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `Subscriptions` ADD CONSTRAINT `subscriptions_ibfk_2` FOREIGN KEY (`workoutId`) REFERENCES `Workouts`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
--- AddForeignKey
 ALTER TABLE `UserMetrics` ADD CONSTRAINT `usermetrics_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `UserMetrics` ADD CONSTRAINT `usermetrics_ibfk_2` FOREIGN KEY (`metricId`) REFERENCES `Metrics`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `UserWorkoutProgress` ADD CONSTRAINT `userworkoutprogress_ibfk_1` FOREIGN KEY (`userWorkoutSessionId`) REFERENCES `UserWorkoutSessions`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `UserWorkoutProgress` ADD CONSTRAINT `userworkoutprogress_ibfk_2` FOREIGN KEY (`roundId`) REFERENCES `Rounds`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `UserWorkoutProgress` ADD CONSTRAINT `userworkoutprogress_ibfk_3` FOREIGN KEY (`exerciseId`) REFERENCES `Exercises`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `UserWorkoutSessions` ADD CONSTRAINT `userworkoutsessions_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `UserWorkoutSessions` ADD CONSTRAINT `userworkoutsessions_ibfk_2` FOREIGN KEY (`workoutId`) REFERENCES `Workouts`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `WorkoutRounds` ADD CONSTRAINT `workoutrounds_ibfk_1` FOREIGN KEY (`workoutId`) REFERENCES `Workouts`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -208,4 +238,3 @@ ALTER TABLE `WorkoutRounds` ADD CONSTRAINT `workoutrounds_ibfk_2` FOREIGN KEY (`
 
 -- AddForeignKey
 ALTER TABLE `Workouts` ADD CONSTRAINT `workouts_ibfk_1` FOREIGN KEY (`bodyPartId`) REFERENCES `BodyParts`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-

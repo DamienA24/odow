@@ -8,23 +8,24 @@ datasource db {
 }
 
 model Account {
-  id                String  @id
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-  User              User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "account_ibfk_1")
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@index([userId], map: "userId")
 }
+
 
 model BodyParts {
   id                Int                 @id @default(autoincrement())
@@ -51,14 +52,15 @@ model ExerciseBodyParts {
 }
 
 model Exercises {
-  id                Int                 @id @default(autoincrement())
-  name              String              @db.VarChar(255)
-  description       String?             @db.Text
-  difficultyLevelId Int?
-  urlVideo          String?             @db.VarChar(255)
-  ExerciseBodyParts ExerciseBodyParts[]
-  DifficultyLevels  DifficultyLevels?   @relation(fields: [difficultyLevelId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercises_ibfk_2")
-  RoundExercises    RoundExercises[]
+  id                  Int                   @id @default(autoincrement())
+  name                String                @db.VarChar(255)
+  description         String?               @db.Text
+  difficultyLevelId   Int?
+  urlVideo            String?               @db.VarChar(255)
+  ExerciseBodyParts   ExerciseBodyParts[]
+  DifficultyLevels    DifficultyLevels?     @relation(fields: [difficultyLevelId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercises_ibfk_2")
+  RoundExercises      RoundExercises[]
+  UserWorkoutProgress UserWorkoutProgress[]
 
   @@index([difficultyLevelId], map: "difficultyLevelId")
 }
@@ -85,43 +87,32 @@ model RoundExercises {
 }
 
 model Rounds {
-  id             Int              @id @default(autoincrement())
-  number         Int
-  rest           Int
-  RoundExercises RoundExercises[]
-  WorkoutRounds  WorkoutRounds[]  @ignore
+  id                  Int                   @id @default(autoincrement())
+  number              Int
+  rest                Int
+  RoundExercises      RoundExercises[]
+  UserWorkoutProgress UserWorkoutProgress[]
+  WorkoutRounds       WorkoutRounds[]
 }
 
 model Session {
-  id           String   @id
+  id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId], map: "Session_userId_fkey")
-}
-
-model Subscriptions {
-  id        String
-  workoutId Int
-  User      User     @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "subscriptions_ibfk_1")
-  Workouts  Workouts @relation(fields: [workoutId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "subscriptions_ibfk_2")
-
-  @@id([id, workoutId])
-  @@index([workoutId], map: "workoutId")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id            String          @id
-  name          String?
-  email         String?         @unique(map: "email")
-  emailVerified DateTime?
-  image         String?
-  Account       Account[]
-  Session       Session[]
-  Subscriptions Subscriptions[]
-  UserMetrics   UserMetrics[]
+  id                  String    @id @default(cuid())
+  name                String?
+  email               String?               @unique(map: "email")
+  emailVerified       DateTime?
+  image               String?
+  Account             Account[]
+  Session             Session[]
+  UserMetrics         UserMetrics[]
+  UserWorkoutSessions UserWorkoutSessions[]
 }
 
 model UserMetrics {
@@ -137,6 +128,36 @@ model UserMetrics {
   @@index([userId], map: "userId")
 }
 
+model UserWorkoutProgress {
+  id                   Int                 @id @default(autoincrement())
+  userWorkoutSessionId Int
+  roundId              Int
+  exerciseId           Int
+  startedAt            DateTime            @db.DateTime(0)
+  completedAt          DateTime?           @db.DateTime(0)
+  UserWorkoutSessions  UserWorkoutSessions @relation(fields: [userWorkoutSessionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutprogress_ibfk_1")
+  Rounds               Rounds              @relation(fields: [roundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutprogress_ibfk_2")
+  Exercises            Exercises           @relation(fields: [exerciseId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutprogress_ibfk_3")
+
+  @@index([exerciseId], map: "exerciseId")
+  @@index([roundId], map: "roundId")
+  @@index([userWorkoutSessionId], map: "userWorkoutSessionId")
+}
+
+model UserWorkoutSessions {
+  id                  Int                   @id @default(autoincrement())
+  userId              String
+  workoutId           Int
+  startDate           DateTime              @db.DateTime(0)
+  endDate             DateTime?             @db.DateTime(0)
+  UserWorkoutProgress UserWorkoutProgress[]
+  User                User                  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutsessions_ibfk_1")
+  Workouts            Workouts              @relation(fields: [workoutId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutsessions_ibfk_2")
+
+  @@index([userId], map: "userId")
+  @@index([workoutId], map: "workoutId")
+}
+
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -145,29 +166,28 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model WorkoutRounds {
   workoutId Int
   roundId   Int
+  id        Int      @id @default(autoincrement())
   Workouts  Workouts @relation(fields: [workoutId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workoutrounds_ibfk_1")
   Rounds    Rounds   @relation(fields: [roundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workoutrounds_ibfk_2")
 
   @@index([roundId], map: "roundId")
   @@index([workoutId], map: "workoutId")
-  @@ignore
 }
 
 model Workouts {
-  id                Int             @id @default(autoincrement())
-  name              String          @db.VarChar(255)
-  durationInMinutes Int
-  description       String?         @db.Text
-  bodyPartId        Int?
-  type              Workouts_type   @default(simple)
-  date              DateTime?       @db.Date
-  Subscriptions     Subscriptions[]
-  WorkoutRounds     WorkoutRounds[] @ignore
-  BodyParts         BodyParts?      @relation(fields: [bodyPartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
+  id                  Int                   @id @default(autoincrement())
+  name                String                @db.VarChar(255)
+  durationInMinutes   Int
+  description         String?               @db.Text
+  bodyPartId          Int?
+  type                Workouts_type         @default(simple)
+  date                DateTime?             @db.Date
+  UserWorkoutSessions UserWorkoutSessions[]
+  WorkoutRounds       WorkoutRounds[]
+  BodyParts           BodyParts?            @relation(fields: [bodyPartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
 
   @@index([bodyPartId], map: "bodyPartId")
 }
