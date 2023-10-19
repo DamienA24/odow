@@ -1,18 +1,21 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
 
-export default async (req, res) => {
-  const session = await getServerSession(req, res, authOptions);
+import { workoutDetailsSchema } from "../../../lib/workout/workoutSchemas";
+import { fetchWorkoutDetails } from "../../../lib/workout/workoutService";
+import withValidation from "../../../lib/withValidation";
+import errorHandler from "../../../lib/errorHandler";
+import withAuth from "../../../lib/withAuth";
 
-  if (session) {
-    res.send({
-      content:
-        "This is protected content. You can access this content because you are signed in.",
-    });
-  } else {
-    res.send({
-      error:
-        "You must be signed in to view the protected content on this page.",
-    });
+const handler = async (req, res) => {
+  try {
+    const { date } = req.validatedQuery;
+    const dateV2 = new Date(date);
+    const workoutDetails = await fetchWorkoutDetails(dateV2);
+
+    res.json(workoutDetails);
+  } catch (error) {
+    errorHandler(error, req, res);
   }
 };
+
+export default withAuth(withValidation(workoutDetailsSchema)(handler));
