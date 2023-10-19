@@ -185,6 +185,7 @@ model Workouts {
   bodyPartId          Int?
   type                Workouts_type         @default(simple)
   date                DateTime?             @db.Date
+  calories            Int
   UserWorkoutSessions UserWorkoutSessions[]
   WorkoutRounds       WorkoutRounds[]
   BodyParts           BodyParts?            @relation(fields: [bodyPartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
