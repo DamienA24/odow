@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
+
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
+import WorkoutStats from "../components/WorkoutStats";
+import WorkoutDate from "../components/WorkoutDate";
+
+import { useWorkoutDaily } from "../hooks";
+
 export default function Workout() {
+  const { workout, isError, isLoading } = useWorkoutDaily();
+
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -10,13 +18,16 @@ export default function Workout() {
       router.push("/");
     },
   });
-
+  console.log(workout);
   return (
     <div>
-      {status === "loading" ? (
+      {status === "loading" || isLoading ? (
         <p style={{ color: "red" }}>loading</p>
       ) : (
-        <p style={{ color: "red" }}>workout soon</p>
+        <>
+          <WorkoutDate />
+          <WorkoutStats />
+        </>
       )}
     </div>
   );
