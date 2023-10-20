@@ -1,4 +1,4 @@
-import styles from "../../styles/Form.module.scss";
+import styles from "./styles/Form.module.scss";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 function Form() {
