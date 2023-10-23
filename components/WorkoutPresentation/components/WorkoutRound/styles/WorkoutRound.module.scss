@@ -1,0 +1,14 @@
+@import "../../../../../styles/variables";
+
+.containerWorkoutRound {
+  width: 100%;
+  margin-left: 25px;
+  p {
+    color: $third-color;
+    font-size: 22px;
+    font-weight: 600;
+    @media (max-width: 380px) {
+      font-size: 18px;
+    }
+  }
+}
