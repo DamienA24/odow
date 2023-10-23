@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
+import WorkoutPresentation from "../components/WorkoutPresentation";
 import WorkoutStats from "../components/WorkoutStats";
 import WorkoutDate from "../components/WorkoutDate";
 
@@ -27,6 +28,7 @@ export default function Workout() {
         <>
           <WorkoutDate />
           <WorkoutStats />
+          <WorkoutPresentation />
         </>
       )}
     </div>
