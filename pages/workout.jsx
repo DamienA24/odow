@@ -6,11 +6,20 @@ import { useRouter } from "next/router";
 import WorkoutPresentation from "../components/WorkoutPresentation";
 import WorkoutStats from "../components/WorkoutStats";
 import WorkoutDate from "../components/WorkoutDate";
+import ButtonStart from "../components/ButtonStart";
 
+import useWorkoutDetailsStore from "../stores/useWorkoutDetailsStore";
 import { useWorkoutDaily } from "../hooks";
 
 export default function Workout() {
   const { workout, isError, isLoading } = useWorkoutDaily();
+  const { workoutDetails, updateWorkoutDetails } = useWorkoutDetailsStore();
+
+  useEffect(() => {
+    if (!isLoading) {
+      updateWorkoutDetails(workout);
+    }
+  }, [isLoading]);
 
   const router = useRouter();
   const { status } = useSession({
@@ -19,7 +28,7 @@ export default function Workout() {
       router.push("/");
     },
   });
-  console.log(workout);
+
   return (
     <div>
       {status === "loading" || isLoading ? (
@@ -29,6 +38,7 @@ export default function Workout() {
           <WorkoutDate />
           <WorkoutStats />
           <WorkoutPresentation />
+          <ButtonStart />
         </>
       )}
     </div>
