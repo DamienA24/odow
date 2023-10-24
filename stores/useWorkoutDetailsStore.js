@@ -9,6 +9,7 @@ const initialWorkoutDetails = () => ({
     partName: "",
   },
   date: "",
+  calories: null,
   WorkoutRounds: [
     {
       roundId: "",

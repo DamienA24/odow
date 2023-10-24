@@ -5,7 +5,8 @@ import styles from "./styles/WorkoutStats.module.scss";
 
 export default function WorkoutStats({ props }) {
   const { workoutDetails } = useWorkoutDetailsStore();
-  const { durationInMinutes, calories } = workoutDetails;
+  const durationInMinutes = workoutDetails?.durationInMinutes;
+  const calories = workoutDetails?.calories;
 
   return (
     <div className={styles.containerWorkoutStats}>
