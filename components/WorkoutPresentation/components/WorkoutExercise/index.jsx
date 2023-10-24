@@ -2,7 +2,7 @@ import React from "react";
 
 import styles from "./styles/WorkoutExercise.module.scss";
 
-export default function WorkoutExercise() {
+export default function WorkoutExercise({ name, reps }) {
   return (
     <div className={styles.containerWorkoutExercise}>
       <img
@@ -12,8 +12,8 @@ export default function WorkoutExercise() {
         alt="Exercise"
       />
       <div className={styles.containerExerciseDetails}>
-        <p className={styles.exerciseName}>PUSH-UP</p>
-        <p className={styles.exerciseReps}>10 reps</p>
+        <p className={styles.exerciseName}>{name}</p>
+        <p className={styles.exerciseReps}>{reps} reps</p>
       </div>
     </div>
   );

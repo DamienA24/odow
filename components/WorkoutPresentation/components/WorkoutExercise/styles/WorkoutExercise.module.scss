@@ -2,7 +2,7 @@
 
 .containerWorkoutExercise {
   display: flex;
-  width: 50vw;
+  width: 80vw;
   margin-left: 25px;
   justify-content: space-between;
   height: 12vh;
@@ -23,6 +23,10 @@
   .exerciseName {
     color: $third-color;
     font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 55vw;
     @media (max-width: 380px) {
       font-size: 18px;
     }
