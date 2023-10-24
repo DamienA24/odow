@@ -1,16 +1,20 @@
 import React from "react";
 
+import useWorkoutDetailsStore from "../../stores/useWorkoutDetailsStore";
 import styles from "./styles/WorkoutStats.module.scss";
 
 export default function WorkoutStats({ props }) {
+  const { workoutDetails } = useWorkoutDetailsStore();
+  const { durationInMinutes, calories } = workoutDetails;
+
   return (
     <div className={styles.containerWorkoutStats}>
       <div className={styles.workoutStat}>
-        <p className={styles.statValue}>20</p>
+        <p className={styles.statValue}>{durationInMinutes}</p>
         <p className={styles.statLabel}>Minutes</p>
       </div>
       <div className={styles.workoutStat}>
-        <p className={styles.statValue}>300</p>
+        <p className={styles.statValue}>{calories}</p>
         <p className={styles.statLabel}>Calories</p>
       </div>
       <img
