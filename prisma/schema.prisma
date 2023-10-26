@@ -55,8 +55,9 @@ model Exercises {
   id                  Int                   @id @default(autoincrement())
   name                String                @db.VarChar(255)
   description         String?               @db.Text
-  difficultyLevelId   Int?
+  difficultyLevelId    Int?
   urlVideo            String?               @db.VarChar(255)
+  stickerVideo        String?               @db.VarChar(255)
   ExerciseBodyParts   ExerciseBodyParts[]
   DifficultyLevels    DifficultyLevels?     @relation(fields: [difficultyLevelId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercises_ibfk_2")
   RoundExercises      RoundExercises[]
@@ -185,7 +186,7 @@ model Workouts {
   bodyPartId          Int?
   type                Workouts_type         @default(simple)
   date                DateTime?             @db.Date
-  calories            Int
+  calories            Int?
   UserWorkoutSessions UserWorkoutSessions[]
   WorkoutRounds       WorkoutRounds[]
   BodyParts           BodyParts?            @relation(fields: [bodyPartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
