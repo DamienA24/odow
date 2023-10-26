@@ -2,7 +2,7 @@
 
 .containerWorkoutExercise {
   display: flex;
-  width: 80vw;
+  width: 85vw;
   margin-left: 25px;
   justify-content: space-between;
   height: 12vh;
@@ -10,8 +10,11 @@
   @media (max-width: 380px) {
     height: 14vh;
   }
-  img {
-    width: 60px;
+  .imageYoutube {
+    width: 80px;
+    @media (max-width: 380px) {
+      width: 70px;
+    }
   }
 }
 
