@@ -1,0 +1,17 @@
+@import "../../../../../styles/_variables";
+
+.containerWorkoutRest {
+  background-color: $primary-color;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .rest {
+    color: $secondary-color;
+    font-size: 20px;
+    font-weight: 600;
+    @media (max-width: 380px) {
+      font-size: 18px;
+    }
+  }
+}

@@ -1,14 +1,45 @@
+import { useState, useEffect } from "react";
+
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
+
+import WorkoutPresentation from "../components/WorkoutPresentation";
+import WorkoutStats from "../components/WorkoutStats";
+import WorkoutDate from "../components/WorkoutDate";
+import ButtonStart from "../components/ButtonStart";
+
+import useWorkoutDetailsStore from "../stores/useWorkoutDetailsStore";
+import { useWorkoutDaily } from "../hooks";
 
 export default function Workout() {
-  const { data: session } = useSession();
+  const { workout, isError, isLoading } = useWorkoutDaily();
+  const { workoutDetails, updateWorkoutDetails } = useWorkoutDetailsStore();
+
+  useEffect(() => {
+    if (!isLoading) {
+      updateWorkoutDetails(workout);
+    }
+  }, [isLoading]);
+
+  const router = useRouter();
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/");
+    },
+  });
 
   return (
     <div>
-      {session ? (
-        <p style={{ color: "red" }}>workout soon</p>
+      {status === "loading" || isLoading ? (
+        <p style={{ color: "red" }}>loading</p>
       ) : (
-        <p style={{ color: "red" }}>you need to log in</p>
+        <>
+          <WorkoutDate />
+          <WorkoutStats />
+          <WorkoutPresentation />
+          <ButtonStart />
+        </>
       )}
     </div>
   );

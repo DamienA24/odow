@@ -1,0 +1,14 @@
+.containerWorkoutDate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 15vh;
+  h1,
+  p {
+    margin: 0;
+  }
+  p {
+    font-weight: 600;
+  }
+}

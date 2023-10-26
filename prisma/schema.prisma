@@ -1,15 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/d/migrate-shadow
-}
-
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialActions"] // You won't need this in Prisma 3.X or higher.
 }
 
 model Account {
@@ -31,6 +26,76 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+
+model BodyParts {
+  id                Int                 @id @default(autoincrement())
+  partName          String              @db.VarChar(255)
+  isGeneralCategory Boolean?            @default(false)
+  ExerciseBodyParts ExerciseBodyParts[]
+  Workouts          Workouts[]
+}
+
+model DifficultyLevels {
+  id        Int         @id @default(autoincrement())
+  levelName String      @db.VarChar(255)
+  Exercises Exercises[]
+}
+
+model ExerciseBodyParts {
+  exerciseId Int
+  bodyPartId Int
+  Exercises  Exercises @relation(fields: [exerciseId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercisebodyparts_ibfk_1")
+  BodyParts  BodyParts @relation(fields: [bodyPartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercisebodyparts_ibfk_2")
+
+  @@id([exerciseId, bodyPartId])
+  @@index([bodyPartId], map: "exercisebodyparts_ibfk_2")
+}
+
+model Exercises {
+  id                  Int                   @id @default(autoincrement())
+  name                String                @db.VarChar(255)
+  description         String?               @db.Text
+  difficultyLevelId    Int?
+  urlVideo            String?               @db.VarChar(255)
+  stickerVideo        String?               @db.VarChar(255)
+  ExerciseBodyParts   ExerciseBodyParts[]
+  DifficultyLevels    DifficultyLevels?     @relation(fields: [difficultyLevelId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercises_ibfk_2")
+  RoundExercises      RoundExercises[]
+  UserWorkoutProgress UserWorkoutProgress[]
+
+  @@index([difficultyLevelId], map: "difficultyLevelId")
+}
+
+model Metrics {
+  id          Int           @id @default(autoincrement())
+  metricName  String        @db.VarChar(255)
+  description String?       @db.Text
+  UserMetrics UserMetrics[]
+}
+
+model RoundExercises {
+  id         Int       @id @default(autoincrement())
+  roundId    Int
+  exerciseId Int
+  reps       Int
+  rest       Int
+  order      Int
+  Rounds     Rounds    @relation(fields: [roundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "roundexercises_ibfk_1")
+  Exercises  Exercises @relation(fields: [exerciseId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "roundexercises_ibfk_2")
+
+  @@index([exerciseId], map: "exerciseId")
+  @@index([roundId], map: "roundId")
+}
+
+model Rounds {
+  id                  Int                   @id @default(autoincrement())
+  number              Int
+  rest                Int
+  RoundExercises      RoundExercises[]
+  UserWorkoutProgress UserWorkoutProgress[]
+  WorkoutRounds       WorkoutRounds[]
+}
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -40,13 +105,58 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                  String    @id @default(cuid())
+  name                String?
+  email               String?               @unique(map: "email")
+  emailVerified       DateTime?
+  image               String?
+  Account             Account[]
+  Session             Session[]
+  UserMetrics         UserMetrics[]
+  UserWorkoutSessions UserWorkoutSessions[]
+}
+
+model UserMetrics {
+  id       Int      @id @default(autoincrement())
+  userId   String
+  metricId Int
+  value    Decimal  @db.Decimal(10, 2)
+  date     DateTime @db.Date
+  User     User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usermetrics_ibfk_1")
+  Metrics  Metrics  @relation(fields: [metricId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usermetrics_ibfk_2")
+
+  @@index([metricId], map: "metricId")
+  @@index([userId], map: "userId")
+}
+
+model UserWorkoutProgress {
+  id                   Int                 @id @default(autoincrement())
+  userWorkoutSessionId Int
+  roundId              Int
+  exerciseId           Int
+  startedAt            DateTime            @db.DateTime(0)
+  completedAt          DateTime?           @db.DateTime(0)
+  UserWorkoutSessions  UserWorkoutSessions @relation(fields: [userWorkoutSessionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutprogress_ibfk_1")
+  Rounds               Rounds              @relation(fields: [roundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutprogress_ibfk_2")
+  Exercises            Exercises           @relation(fields: [exerciseId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutprogress_ibfk_3")
+
+  @@index([exerciseId], map: "exerciseId")
+  @@index([roundId], map: "roundId")
+  @@index([userWorkoutSessionId], map: "userWorkoutSessionId")
+}
+
+model UserWorkoutSessions {
+  id                  Int                   @id @default(autoincrement())
+  userId              String
+  workoutId           Int
+  startDate           DateTime              @db.DateTime(0)
+  endDate             DateTime?             @db.DateTime(0)
+  UserWorkoutProgress UserWorkoutProgress[]
+  User                User                  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutsessions_ibfk_1")
+  Workouts            Workouts              @relation(fields: [workoutId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutsessions_ibfk_2")
+
+  @@index([userId], map: "userId")
+  @@index([workoutId], map: "workoutId")
 }
 
 model VerificationToken {
@@ -55,4 +165,36 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model WorkoutRounds {
+  workoutId Int
+  roundId   Int
+  id        Int      @id @default(autoincrement())
+  Workouts  Workouts @relation(fields: [workoutId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workoutrounds_ibfk_1")
+  Rounds    Rounds   @relation(fields: [roundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workoutrounds_ibfk_2")
+
+  @@index([roundId], map: "roundId")
+  @@index([workoutId], map: "workoutId")
+}
+
+model Workouts {
+  id                  Int                   @id @default(autoincrement())
+  name                String                @db.VarChar(255)
+  durationInMinutes   Int
+  description         String?               @db.Text
+  bodyPartId          Int?
+  type                Workouts_type         @default(simple)
+  date                DateTime?             @db.Date
+  calories            Int?
+  UserWorkoutSessions UserWorkoutSessions[]
+  WorkoutRounds       WorkoutRounds[]
+  BodyParts           BodyParts?            @relation(fields: [bodyPartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
+
+  @@index([bodyPartId], map: "bodyPartId")
+}
+
+enum Workouts_type {
+  simple
+  complexe
 }
