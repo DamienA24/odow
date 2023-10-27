@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
-import WorkoutPresentation from "../components/WorkoutPresentation";
-import WorkoutStats from "../components/WorkoutStats";
-import WorkoutDate from "../components/WorkoutDate";
-import ButtonStart from "../components/ButtonStart";
+import WorkoutPresentation from "components/WorkoutPresentation";
+import WorkoutStats from "components/WorkoutStats";
+import WorkoutDate from "components/WorkoutDate";
+import ButtonStart from "components/ButtonStart";
 
-import useWorkoutDetailsStore from "../stores/useWorkoutDetailsStore";
-import { useWorkoutDaily } from "../hooks";
+import useWorkoutDetailsStore from "stores/useWorkoutDetailsStore";
+import { useWorkoutDaily } from "hooks";
 
 export default function Workout() {
   const { workout, isError, isLoading } = useWorkoutDaily();

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 
-import "../styles/globals.scss";
+import "styles/globals.scss";
 
 export default function MyApp({
   Component,

@@ -1,6 +1,6 @@
 import React from "react";
 
-import useWorkoutDetailsStore from "../../../../stores/useWorkoutDetailsStore";
+import useWorkoutDetailsStore from "stores/useWorkoutDetailsStore";
 import styles from "./styles/WorkoutRound.module.scss";
 
 export default function WorkoutRound() {

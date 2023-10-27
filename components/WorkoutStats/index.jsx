@@ -2,9 +2,9 @@ import React from "react";
 
 import Image from "next/image";
 
-import useWorkoutDetailsStore from "../../stores/useWorkoutDetailsStore";
+import useWorkoutDetailsStore from "stores/useWorkoutDetailsStore";
 import styles from "./styles/WorkoutStats.module.scss";
-import heart from "../../public/icons/heart.svg";
+import heart from "public/icons/heart.svg";
 
 export default function WorkoutStats({ props }) {
   const { workoutDetails } = useWorkoutDetailsStore();

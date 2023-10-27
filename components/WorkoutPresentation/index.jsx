@@ -4,7 +4,7 @@ import WorkoutExercise from "./components/WorkoutExercise";
 import WorkoutRound from "./components/WorkoutRound";
 import WorkoutRest from "./components/WorkoutRest";
 
-import useWorkoutDetailsStore from "../../stores/useWorkoutDetailsStore";
+import useWorkoutDetailsStore from "stores/useWorkoutDetailsStore";
 import styles from "./styles/WorkoutPresentation.module.scss";
 
 export default function WorkoutPresentation() {
