@@ -14,13 +14,6 @@ import { useWorkoutDaily } from "hooks";
 export default function Workout() {
   const { workout, isError, isLoading } = useWorkoutDaily();
   const { workoutDetails, updateWorkoutDetails } = useWorkoutDetailsStore();
-
-  useEffect(() => {
-    if (!isLoading) {
-      updateWorkoutDetails(workout);
-    }
-  }, [isLoading]);
-
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -28,6 +21,12 @@ export default function Workout() {
       router.push("/");
     },
   });
+
+  useEffect(() => {
+    if (!isLoading) {
+      updateWorkoutDetails(workout);
+    }
+  }, [isLoading]);
 
   return (
     <div>
