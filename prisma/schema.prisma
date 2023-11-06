@@ -133,6 +133,7 @@ model UserWorkoutProgress {
   id                   Int                 @id @default(autoincrement())
   userWorkoutSessionId Int
   roundId              Int
+  roundNumber          Int
   exerciseId           Int
   startedAt            DateTime            @db.DateTime(0)
   completedAt          DateTime?           @db.DateTime(0)
