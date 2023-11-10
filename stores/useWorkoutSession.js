@@ -1,10 +1,11 @@
 import { devtools } from "zustand/middleware";
 import { create } from "zustand";
 
-const round = {
+const exercise = {
   roundId: null,
   exerciseId: null,
   roundNumber: null,
+  rest: null,
   startedAt: "",
   completedAt: "",
 };
