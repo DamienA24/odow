@@ -1,0 +1,12 @@
+@import "../../../../../styles/variables";
+
+.containerNextExercise {
+  margin: 0px 10px 0px 10px;
+  p {
+    color: $secondary-color;
+    font-weight: 700;
+    font-size: 35px;
+    margin: 0;
+    text-align: center;
+  }
+}
