@@ -32,7 +32,14 @@ const handler = async (req, res) => {
         const userWorkoutProgress = await fetchUserWorkoutProgress(
           userWorkoutSessionExist.id
         );
-        const sessionDetails = formateWorkoutSession(userWorkoutProgress);
+        const workoutProgress = formateWorkoutSession(userWorkoutProgress);
+        const sessionDetails = {
+          userSessionWorkoutId: userWorkoutSessionExist.id,
+          workoutId: userWorkoutSessionExist.workoutId,
+          userId: userWorkoutSessionExist.userId,
+          preStart: true,
+          rounds: workoutProgress,
+        };
         return res.json({
           message: "Session exists",
           sessionDetails,
