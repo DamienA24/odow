@@ -2,12 +2,11 @@ import { devtools } from "zustand/middleware";
 import { create } from "zustand";
 
 const exercise = {
+  idUserWorkoutProgress: null,
   roundId: null,
   exerciseId: null,
   roundNumber: null,
   rest: null,
-  startedAt: "",
-  completedAt: "",
 };
 
 const initialWorkoutSession = () => ({
@@ -18,6 +17,7 @@ const initialWorkoutSession = () => ({
   start: false,
   end: false,
   pause: false,
+  resumed: false,
   rounds: [],
 });
 
