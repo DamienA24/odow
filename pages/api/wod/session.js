@@ -1,19 +1,25 @@
-import { workoutIdSchema } from "lib/workout/workoutSchemas";
+import {
+  workoutRestartSessionSchema,
+  workoutIdSchema,
+} from "lib/workout/workoutSchemas";
 import { userEmailSchema } from "lib/user/userSchemas";
 
+import { fetchUserWorkoutProgress } from "lib/workout/workoutService";
 import {
   verifyUserWorkoutSessionExist,
   removeUserWorkoutIdSession,
   startUserWorkout,
   getUserId,
 } from "lib/user/userService";
+
+import formateWorkoutSession from "lib/formateWorkoutSession";
 import withValidation from "lib/withValidation";
 import errorHandler from "lib/errorHandler";
 import withAuth from "lib/withAuth";
 
 const handler = async (req, res) => {
   try {
-    const { email, workoutId } = req.validatedBody;
+    const { email, workoutId, restartSession } = req.validatedBody;
     const userId = await getUserId(email);
     const date = new Date();
     const userWorkoutSessionExist = await verifyUserWorkoutSessionExist(
@@ -22,6 +28,17 @@ const handler = async (req, res) => {
     );
 
     if (userWorkoutSessionExist) {
+      if (!restartSession) {
+        const userWorkoutProgress = await fetchUserWorkoutProgress(
+          userWorkoutSessionExist.id
+        );
+        const sessionDetails = formateWorkoutSession(userWorkoutProgress);
+        return res.json({
+          message: "Session exists",
+          sessionDetails,
+        });
+      }
+
       await removeUserWorkoutIdSession(userId.id, workoutId);
     }
     const startSession = await startUserWorkout(userId.id, workoutId, date);
@@ -33,5 +50,9 @@ const handler = async (req, res) => {
 };
 
 export default withAuth(
-  withValidation(userEmailSchema, workoutIdSchema)(handler)
+  withValidation(
+    workoutRestartSessionSchema,
+    userEmailSchema,
+    workoutIdSchema
+  )(handler)
 );

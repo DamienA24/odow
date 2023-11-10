@@ -1,4 +1,4 @@
-import { workoutProgress } from "lib/workout/workoutSchemas";
+import { workoutProgressSchema } from "lib/workout/workoutSchemas";
 
 import { insertUserWorkoutProgress } from "lib/workout/workoutService";
 import withValidation from "lib/withValidation";
@@ -17,11 +17,14 @@ const handler = async (req, res) => {
       roundId,
       date
     );
-
-    return res.json({ idUserWorkoutProgress: addUserProgression.id });
+    const result = {
+      ...req.validatedBody,
+      idUserWorkoutProgress: addUserProgression.id,
+    };
+    return res.json(result);
   } catch (error) {
     errorHandler(error, req, res);
   }
 };
 
-export default withAuth(withValidation(workoutProgress)(handler));
+export default withAuth(withValidation(workoutProgressSchema)(handler));
