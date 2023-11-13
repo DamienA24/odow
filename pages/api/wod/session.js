@@ -4,7 +4,10 @@ import {
 } from "lib/workout/workoutSchemas";
 import { userEmailSchema } from "lib/user/userSchemas";
 
-import { fetchUserWorkoutProgress } from "lib/workout/workoutService";
+import {
+  removeUserWorkoutProgress,
+  fetchUserWorkoutProgress,
+} from "lib/workout/workoutService";
 import {
   verifyUserWorkoutSessionExist,
   removeUserWorkoutIdSession,
@@ -46,7 +49,14 @@ const handler = async (req, res) => {
         });
       }
 
-      await removeUserWorkoutIdSession(userId.id, workoutId);
+      const workoutProgressDeleted = await removeUserWorkoutProgress(
+        userWorkoutSessionExist.id
+      );
+      const sessionRemoved = await removeUserWorkoutIdSession(
+        userId.id,
+        workoutId
+      );
+      return res.json({ message: "Session removed" });
     }
     const startSession = await startUserWorkout(userId.id, workoutId, date);
 
