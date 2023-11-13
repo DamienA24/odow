@@ -1,3 +1,4 @@
+import { devtools } from "zustand/middleware";
 import { create } from "zustand";
 
 const initialWorkoutDetails = () => ({
@@ -50,10 +51,12 @@ const initialWorkoutDetails = () => ({
   ],
 });
 
-const useWorkoutDetailsStore = create((set) => ({
-  workoutDetails: initialWorkoutDetails(),
-  updateWorkoutDetails: (newWorkoutDetails) =>
-    set({ workoutDetails: newWorkoutDetails }),
-}));
+const useWorkoutDetailsStore = create(
+  devtools((set) => ({
+    workoutDetails: initialWorkoutDetails(),
+    updateWorkoutDetails: (newWorkoutDetails) =>
+      set({ workoutDetails: newWorkoutDetails }),
+  }))
+);
 
 export default useWorkoutDetailsStore;

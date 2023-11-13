@@ -1,10 +1,8 @@
-import { getServerSession } from "next-auth/next";
-
-import { workoutDetailsSchema } from "../../../lib/workout/workoutSchemas";
-import { fetchWorkoutDetails } from "../../../lib/workout/workoutService";
-import withValidation from "../../../lib/withValidation";
-import errorHandler from "../../../lib/errorHandler";
-import withAuth from "../../../lib/withAuth";
+import { workoutDetailsSchema } from "lib/workout/workoutSchemas";
+import { fetchWorkoutDetails } from "lib/workout/workoutService";
+import withValidation from "lib/withValidation";
+import errorHandler from "lib/errorHandler";
+import withAuth from "lib/withAuth";
 
 const handler = async (req, res) => {
   try {

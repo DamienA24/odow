@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import styles from "../styles/Home.module.scss";
-import SignIn from "../components/SignIn";
+import styles from "styles/Home.module.scss";
+import SignIn from "components/SignIn";
 
 export default function Home() {
   return (

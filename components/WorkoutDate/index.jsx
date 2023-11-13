@@ -1,6 +1,6 @@
 import React from "react";
 
-import useWorkoutDetailsStore from "../../stores/useWorkoutDetailsStore";
+import useWorkoutDetailsStore from "stores/useWorkoutDetailsStore";
 import styles from "./styles/WorkoutDate.module.scss";
 
 export default function WorkoutDate({ props }) {

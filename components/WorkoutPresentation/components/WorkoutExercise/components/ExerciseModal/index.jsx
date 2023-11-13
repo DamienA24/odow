@@ -4,7 +4,7 @@ import React from "react";
 import ReactPlayer from "react-player/lazy";
 import Image from "next/image";
 
-import closeButton from "../../../../../../public/icons/close.svg";
+import closeButton from "public/icons/close.svg";
 import styles from "./styles/ExerciseModal.module.scss";
 
 const opts = {
