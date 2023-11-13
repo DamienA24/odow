@@ -11,14 +11,16 @@ import ButtonStartWorkout from "components/ButtonStartWorkout";
 
 import useWorkoutDetailsStore from "stores/useWorkoutDetailsStore";
 import useWorkoutSession from "../stores/useWorkoutSession";
-import { useWorkoutDaily } from "hooks";
+import { useWorkoutDaily, useApiRequest } from "hooks";
 
 export default function Workout() {
   const { workout, isError, isLoading } = useWorkoutDaily();
   const { workoutDetails, updateWorkoutDetails } = useWorkoutDetailsStore();
-  const { workoutSession } = useWorkoutSession();
+  const { workoutSession, updateWorkoutSession, resetWorkoutSession } =
+    useWorkoutSession();
+  const { data, error, isLoading: loadingRequest, request } = useApiRequest();
   const router = useRouter();
-  const { status } = useSession({
+  const { status, data: session } = useSession({
     required: true,
     onUnauthenticated() {
       router.push("/");
@@ -31,6 +33,31 @@ export default function Workout() {
     }
   }, [isLoading]);
 
+  useEffect(() => {
+    if (workoutSession.resumed) {
+      proposeRestartWorkout();
+    }
+  }, [workoutSession.resumed]);
+
+  function proposeRestartWorkout() {
+    const userResponse = window.confirm(
+      "Do you want to continue your training session ?"
+    );
+    if (userResponse) {
+      /*   const restartSession = {
+        resumed: false,
+        preStart: true,
+      };
+      updateWorkoutSession(restartSession); */
+    } else {
+      request("/api/wod/session", "POST", {
+        email: session.user.email,
+        workoutId: workoutDetails.id,
+        restartSession: true,
+      });
+      resetWorkoutSession();
+    }
+  }
   return (
     <div>
       {status === "loading" || isLoading ? (
@@ -38,7 +65,7 @@ export default function Workout() {
       ) : (
         <>
           <WorkoutDate />
-          {workoutSession.preStart ? (
+          {workoutSession.preStart && !workoutSession.resumed ? (
             <WorkoutInProgress />
           ) : (
             <>
