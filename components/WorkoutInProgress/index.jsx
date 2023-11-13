@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useTimer } from "react-timer-hook";
 
@@ -14,6 +14,13 @@ import Rest from "./components/Rest";
 import { useApiRequest } from "hooks";
 
 export default function WorkoutInProgress() {
+  const [exercise, setExercise] = useState({
+    name: "",
+    reps: null,
+    id: null,
+    rest: null,
+  });
+  const [restTime, setRestTime] = useState(5);
   const { workoutDetails } = useWorkoutDetailsStore();
   const {
     workoutSession,
@@ -22,9 +29,7 @@ export default function WorkoutInProgress() {
     updateWorkoutSession,
   } = useWorkoutSession();
   const { data, error, isLoading, request } = useApiRequest();
-  const workoutStarted = workoutSession.start && workoutSession.rounds.length;
-  const exercise = findExercise();
-  const restTime = findTimeRest();
+  //const workoutStarted = workoutSession.start && workoutSession.rounds.length;
   const time = new Date();
   time.setSeconds(time.getSeconds() + restTime);
 
@@ -33,11 +38,26 @@ export default function WorkoutInProgress() {
     onExpire: timerExpired,
   });
 
+  useEffect(() => {
+    if (data) {
+      if (!workoutSession.start) {
+        startWorkout();
+      }
+      addExerciseInRound(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    findExercise();
+    findTimeRest();
+  }, [workoutSession.rounds]);
+
   async function timerExpired() {
     const roundNumber = workoutSession.rounds.length || 1;
+    console.log(exercise);
     request("/api/wod/progress", "POST", {
       userWorkoutSessionId: workoutSession.userSessionWorkoutId,
-      exerciseId: exercise.exerciseId,
+      exerciseId: exercise.id,
       roundNumber,
       roundId: workoutDetails.WorkoutRounds[0].roundId,
       rest: exercise.rest,
@@ -56,36 +76,32 @@ export default function WorkoutInProgress() {
     addExerciseToRound(indexRounds, exerciseUpdated);
   }
 
-  useEffect(() => {
-    if (data) {
-      startWorkout();
-      addExerciseInRound(data);
-    }
-  }, [data]);
-
   function findTimeRest() {
-    let rest = 5;
-
-    if (workoutStarted) {
+    if (workoutSession.start) {
       const currentRound =
         workoutSession.rounds[workoutSession.rounds.length - 1];
       const exerciseFinished = currentRound[currentRound.length - 1];
-      rest = exerciseFinished.rest;
+      const rest = exerciseFinished.rest;
+      setRestTime(rest);
     }
-    return rest;
   }
 
   function findExercise() {
     let exercise = workoutDetails.WorkoutRounds[0].Rounds.RoundExercises[0];
-    if (workoutStarted) {
+    if (workoutSession.start) {
     }
 
-    return exercise;
+    setExercise({
+      name: exercise.Exercises.name,
+      reps: exercise.reps,
+      id: exercise.exerciseId,
+      rest: exercise.rest,
+    });
   }
 
   function returnPrevious() {
     let updateSession = {};
-    if (workoutStarted) {
+    if (workoutSession.start) {
     } else {
       updateSession.returnStart = true;
       updateSession.preStart = false;
@@ -93,20 +109,25 @@ export default function WorkoutInProgress() {
 
     updateWorkoutSession(updateSession);
   }
-
   return (
     <div className={styles.containerWorkoutInProgress}>
-      <Rest rest={seconds} />
-      <div>
-        <NextExercise reps={exercise.reps} name={exercise.Exercises.name} />
-        <ControlTime
-          returnPrevious={returnPrevious}
-          isRunning={isRunning}
-          start={start}
-          pause={pause}
-          resume={resume}
-        />
-      </div>
+      {!workoutSession.start ? (
+        <>
+          <Rest rest={seconds} />
+          <div>
+            <NextExercise reps={exercise.reps} name={exercise.name} />
+            <ControlTime
+              returnPrevious={returnPrevious}
+              isRunning={isRunning}
+              start={start}
+              pause={pause}
+              resume={resume}
+            />
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
