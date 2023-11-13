@@ -6,11 +6,24 @@ import backwards from "./icons/backwards.svg";
 import forwards from "./icons/forwards.svg";
 import pauseIcon from "./icons/pause.svg";
 import playIcon from "./icons/play.svg";
-export default function ControlTime({ isRunning, start, pause, resume }) {
+
+export default function ControlTime({
+  isRunning,
+  start,
+  pause,
+  resume,
+  returnPrevious,
+}) {
   return (
     <div>
       <div className={styles.containerControlTime}>
-        <Image src={backwards} width={100} height={100} alt="icon image" />
+        <Image
+          src={backwards}
+          width={100}
+          height={100}
+          alt="icon image"
+          onClick={returnPrevious}
+        />
 
         {isRunning ? (
           <Image
