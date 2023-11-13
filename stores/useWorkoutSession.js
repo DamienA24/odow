@@ -40,6 +40,10 @@ const useWorkoutSession = create(
       set((state) => ({
         workoutSession: { ...state.workoutSession, pause: true },
       })),
+    resumeWorkout: () =>
+      set((state) => ({
+        workoutSession: { ...state.workoutSession, resumed: true },
+      })),
     addExerciseToRound: (roundIndex, newExercise) =>
       set((state) => {
         const updatedRounds = state.workoutSession.rounds.slice();
