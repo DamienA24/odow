@@ -7,7 +7,7 @@ import withAuth from "lib/withAuth";
 
 const handler = async (req, res) => {
   try {
-    const { userWorkoutSessionId, exerciseId, roundNumber, roundId } =
+    const { userWorkoutSessionId, exerciseId, roundNumber, roundId, rest } =
       req.validatedBody;
     const date = new Date();
     const addUserProgression = await insertUserWorkoutProgress(
@@ -15,7 +15,8 @@ const handler = async (req, res) => {
       exerciseId,
       roundNumber,
       roundId,
-      date
+      date,
+      rest
     );
     const result = {
       ...req.validatedBody,
