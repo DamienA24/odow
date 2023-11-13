@@ -1,0 +1,12 @@
+@import "../../../../../styles/variables";
+
+.containerTimeProgress {
+  text-align: center;
+  span {
+    color: $secondary-color;
+    font-weight: 600;
+    font-size: 60px;
+    margin: 0;
+    text-align: center;
+  }
+}
