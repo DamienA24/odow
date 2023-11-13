@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import Image from "next/image";
-
 import ExerciseModal from "./components/ExerciseModal";
 
 import styles from "./styles/WorkoutExercise.module.scss";
