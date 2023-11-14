@@ -8,5 +8,8 @@
     font-size: 60px;
     margin: 0;
     text-align: center;
+    @media (max-width: 380px) {
+      font-size: 30px;
+    }
   }
 }

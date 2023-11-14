@@ -1,12 +1,17 @@
 @import "../../../../../styles/variables";
 
-.containerNextExercise {
-  margin: 0px 10px 0px 10px;
+.containerExerciseInProgress {
+  .containerReactPlayer {
+    height: 250px;
+    @media (max-width: 380px) {
+      height: 150px;
+    }
+  }
   p {
     color: $secondary-color;
     font-weight: 700;
     font-size: 35px;
-    margin: 0;
+    margin: 15px 0 15px 0;
     text-align: center;
     @media (max-width: 380px) {
       font-size: 30px;
