@@ -89,7 +89,7 @@ export default function WorkoutInProgress() {
     if (dataWorkoutProgress) {
       const { roundNumber, exerciseId } = dataWorkoutProgress;
       updateExerciseInRound(roundNumber - 1, exerciseId, { completed: true });
-      findExercise();
+      findNextExercise();
       setUserSkippedTimerRest(false);
     }
   }, [dataWorkoutProgress]);
@@ -102,7 +102,7 @@ export default function WorkoutInProgress() {
   }, [exercise]);
 
   useEffect(() => {
-    findExercise();
+    findNextExercise();
     const now = new Date();
     setOffsetWatch(now);
 
@@ -186,7 +186,7 @@ export default function WorkoutInProgress() {
     }
   }
 
-  function exoInCurrentRound() {
+  function nextExoInCurrentRound() {
     const exo = workoutDetails.WorkoutRounds[0].Rounds.RoundExercises.find(
       (exercise) =>
         !workoutSession.rounds[currentRound - 1].some(
@@ -198,17 +198,19 @@ export default function WorkoutInProgress() {
     return exo;
   }
 
-  function findExercise() {
+  function findNextExercise() {
     let exercise = workoutDetails.WorkoutRounds[0].Rounds.RoundExercises[0];
     if (workoutSession.start) {
-      const exoCurrentRound = exoInCurrentRound();
-      if (exoCurrentRound) {
-        const { name, stickerVideo, urlVideo } = exoCurrentRound.Exercises;
+      const nextExerciseCurrentRound = nextExoInCurrentRound();
+      console.log("exoCurrentRound", nextExerciseCurrentRound);
+      if (nextExerciseCurrentRound) {
+        const { name, stickerVideo, urlVideo } =
+          nextExerciseCurrentRound.Exercises;
         setExercise({
           name,
-          reps: exoCurrentRound.reps,
-          id: exoCurrentRound.exerciseId,
-          rest: exoCurrentRound.rest,
+          reps: nextExerciseCurrentRound.reps,
+          id: nextExerciseCurrentRound.exerciseId,
+          rest: nextExerciseCurrentRound.rest,
           urlVideo,
           stickerVideo,
         });
