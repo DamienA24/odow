@@ -15,7 +15,7 @@ const initialWorkoutSession = () => ({
   userId: "",
   workoutId: null,
   preStart: false,
-  returnPrevious: false,
+  returnNContinue: false,
   returnStart: false,
   start: false,
   end: false,
