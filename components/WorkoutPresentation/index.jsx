@@ -26,7 +26,7 @@ export default function WorkoutPresentation() {
                 stickerVideo={stickerVideo}
                 urlVideo={urlVideo}
                 description={description}
-                key={stickerVideo}
+                key={`${name}-${stickerVideo}`}
               />
             );
           })
