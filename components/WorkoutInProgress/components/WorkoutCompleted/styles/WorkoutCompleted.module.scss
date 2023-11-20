@@ -1,0 +1,18 @@
+@import "../../../../../styles/variables";
+
+.containerWorkoutCompleted {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  p {
+    color: $secondary-color;
+    font-weight: 700;
+    font-size: 35px;
+    margin: 0px 3px 0px 3px;
+    text-align: center;
+    @media (max-width: 380px) {
+      font-size: 30px;
+    }
+  }
+}
