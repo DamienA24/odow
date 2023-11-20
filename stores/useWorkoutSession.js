@@ -7,6 +7,7 @@ const exercise = {
   exerciseId: null,
   roundNumber: null,
   rest: null,
+  completed: false,
 };
 
 const initialWorkoutSession = () => ({

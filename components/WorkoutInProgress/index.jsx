@@ -42,6 +42,7 @@ export default function WorkoutInProgress() {
     addExerciseToRound,
     startWorkout,
     updateWorkoutSession,
+    updateExerciseInRound,
     endWorkout,
   } = useWorkoutSession();
 
@@ -86,6 +87,8 @@ export default function WorkoutInProgress() {
 
   useEffect(() => {
     if (dataWorkoutProgress) {
+      const { roundNumber, exerciseId } = dataWorkoutProgress;
+      updateExerciseInRound(roundNumber - 1, exerciseId, { completed: true });
       findExercise();
       setUserSkippedTimerRest(false);
     }
@@ -158,6 +161,7 @@ export default function WorkoutInProgress() {
       exerciseId: userWorkoutProgress.exerciseId,
       roundNumber: userWorkoutProgress.roundNumber,
       rest: exercise.rest,
+      completed: false,
     };
     const indexRounds = currentRound - 1;
     addExerciseToRound(indexRounds, exerciseUpdated);
