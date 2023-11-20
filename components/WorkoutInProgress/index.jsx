@@ -58,7 +58,7 @@ export default function WorkoutInProgress() {
 
   const { totalSeconds, isRunning, start, pause, resume, restart } = useTimer({
     expiryTimestamp: time,
-    onExpire: nextExercise(),
+    onExpire: nextExercise,
   });
 
   const {
