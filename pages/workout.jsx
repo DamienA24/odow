@@ -44,11 +44,14 @@ export default function Workout() {
       "Do you want to continue your training session ?"
     );
     if (userResponse) {
-      /*   const restartSession = {
+      const restartSession = {
+        returnNContinue: true,
         resumed: false,
         preStart: true,
+        start: true,
+        rest: true,
       };
-      updateWorkoutSession(restartSession); */
+      updateWorkoutSession(restartSession);
     } else {
       request("/api/wod/session", "POST", {
         email: session.user.email,

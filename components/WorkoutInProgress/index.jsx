@@ -122,29 +122,46 @@ export default function WorkoutInProgress() {
 
   async function nextExercise(callByUser = false) {
     if (userSkippedTimerRest) return;
-    const roundNumber = roundFinished ? currentRound + 1 : currentRound;
+    const roundNumber = workoutSession.returnNContinue
+      ? workoutSession.rounds.length
+      : roundFinished
+      ? currentRound + 1
+      : currentRound;
     setDisplayComponents(false);
     setCurrentRound(roundNumber);
-    request("/api/wod/progress", "POST", {
-      userWorkoutSessionId: workoutSession.userSessionWorkoutId,
-      exerciseId: exercise.id,
-      roundNumber,
-      roundId: workoutDetails.WorkoutRounds[0].roundId,
-      rest: exercise.rest,
-    });
+    if (workoutSession.returnNContinue && !roundFinished) {
+      pause();
+      setRoundFinished(false);
+      const updateSession = { rest: false };
+      updateWorkoutSession(updateSession);
+      setDisplayComponents(true);
+    } else {
+      request("/api/wod/progress", "POST", {
+        userWorkoutSessionId: workoutSession.userSessionWorkoutId,
+        exerciseId: exercise.id,
+        roundNumber,
+        roundId: workoutDetails.WorkoutRounds[0].roundId,
+        rest: exercise.rest,
+      });
+    }
+
     if (callByUser) setUserSkippedTimerRest(true);
   }
 
   function nextRest() {
     setDisplayComponents(false);
-    const updateSession = { rest: true };
+    const returnNContinue = !!workoutSession.returnNContinue;
+    const updateSession = { rest: true, returnNContinue: false };
     updateWorkoutSession(updateSession);
 
-    const roundNumber = currentRound;
+    const roundNumber = returnNContinue
+      ? workoutSession.rounds.length
+      : currentRound;
     const exercises = workoutSession.rounds[roundNumber - 1];
     const exerciseFinished = exercises[exercises.length - 1];
     const { exerciseId, roundId, rest, idUserWorkoutProgress } =
       exerciseFinished;
+
     requestWorkoutProgress("/api/wod/progress-update", "PUT", {
       idUserWorkoutProgress,
       exerciseId,
@@ -187,13 +204,25 @@ export default function WorkoutInProgress() {
   }
 
   function nextExoInCurrentRound() {
-    const exo = workoutDetails.WorkoutRounds[0].Rounds.RoundExercises.find(
-      (exercise) =>
-        !workoutSession.rounds[currentRound - 1].some(
-          (finishedExercise) =>
-            finishedExercise.exerciseId === exercise.exerciseId
-        )
-    );
+    let exo = {};
+    if (workoutSession.returnNContinue) {
+      exo = workoutDetails.WorkoutRounds[0].Rounds.RoundExercises.find(
+        (exercise) =>
+          workoutSession.rounds[workoutSession.rounds.length - 1].some(
+            (finishedExercise) =>
+              finishedExercise.exerciseId === exercise.exerciseId &&
+              !finishedExercise.completed
+          )
+      );
+    } else {
+      exo = workoutDetails.WorkoutRounds[0].Rounds.RoundExercises.find(
+        (exercise) =>
+          !workoutSession.rounds[currentRound - 1].some(
+            (finishedExercise) =>
+              finishedExercise.exerciseId === exercise.exerciseId
+          )
+      );
+    }
 
     return exo;
   }
@@ -202,7 +231,6 @@ export default function WorkoutInProgress() {
     let exercise = workoutDetails.WorkoutRounds[0].Rounds.RoundExercises[0];
     if (workoutSession.start) {
       const nextExerciseCurrentRound = nextExoInCurrentRound();
-      console.log("exoCurrentRound", nextExerciseCurrentRound);
       if (nextExerciseCurrentRound) {
         const { name, stickerVideo, urlVideo } =
           nextExerciseCurrentRound.Exercises;
