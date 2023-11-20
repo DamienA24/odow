@@ -19,6 +19,7 @@ const initialWorkoutSession = () => ({
   start: false,
   end: false,
   pause: false,
+  rest: false,
   resumed: false,
   rounds: [],
 });

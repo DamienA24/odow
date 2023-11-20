@@ -14,39 +14,43 @@ const initialWorkoutDetails = () => ({
   WorkoutRounds: [
     {
       roundId: "",
-      Rounds: [
-        {
-          exerciseId: null,
-          Exercises: {
-            name: "",
-            description: "",
-            urlVideo: "",
-            DifficultyLevels: {
-              levelName: "",
+      Rounds: {
+        number: 2,
+        rest: 60,
+        RoundExercises: [
+          {
+            exerciseId: null,
+            Exercises: {
+              name: "",
+              description: "",
+              urlVideo: "",
+              DifficultyLevels: {
+                levelName: "",
+              },
+              ExerciseBodyParts: [
+                {
+                  BodyParts: {
+                    partName: "",
+                  },
+                },
+                {
+                  BodyParts: {
+                    partName: "",
+                  },
+                },
+                {
+                  BodyParts: {
+                    partName: "",
+                  },
+                },
+              ],
             },
-            ExerciseBodyParts: [
-              {
-                BodyParts: {
-                  partName: "",
-                },
-              },
-              {
-                BodyParts: {
-                  partName: "",
-                },
-              },
-              {
-                BodyParts: {
-                  partName: "",
-                },
-              },
-            ],
+            reps: null,
+            rest: null,
+            order: null,
           },
-          reps: null,
-          rest: null,
-          order: null,
-        },
-      ],
+        ],
+      },
     },
   ],
 });
