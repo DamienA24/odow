@@ -1,6 +1,7 @@
 import { updateWorkoutProgressSchema } from "lib/workout/workoutSchemas";
 
 import { updateUserWorkoutProgress } from "lib/workout/workoutService";
+import allowedMethods from "lib/allowedMethods";
 import withValidation from "lib/withValidation";
 import errorHandler from "lib/errorHandler";
 import withAuth from "lib/withAuth";
@@ -24,4 +25,6 @@ const handler = async (req, res) => {
   }
 };
 
-export default withAuth(withValidation(updateWorkoutProgressSchema)(handler));
+export default allowedMethods(["PUT"])(
+  withAuth(withValidation(updateWorkoutProgressSchema)(handler))
+);

@@ -16,6 +16,7 @@ import {
 } from "lib/user/userService";
 
 import formateWorkoutSession from "lib/formateWorkoutSession";
+import allowedMethods from "lib/allowedMethods";
 import withValidation from "lib/withValidation";
 import errorHandler from "lib/errorHandler";
 import withAuth from "lib/withAuth";
@@ -66,10 +67,12 @@ const handler = async (req, res) => {
   }
 };
 
-export default withAuth(
-  withValidation(
-    workoutRestartSessionSchema,
-    userEmailSchema,
-    workoutIdSchema
-  )(handler)
+export default allowedMethods(["POST"])(
+  withAuth(
+    withValidation(
+      workoutRestartSessionSchema,
+      userEmailSchema,
+      workoutIdSchema
+    )(handler)
+  )
 );
