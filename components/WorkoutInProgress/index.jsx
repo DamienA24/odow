@@ -214,15 +214,22 @@ export default function WorkoutInProgress() {
   }
 
   function nextExoInCurrentRound() {
-    let exo = {};
+    let exo = undefined;
     if (workoutSession.returnNContinue) {
+      const lastRoundExercises = workoutSession.rounds[
+        workoutSession.rounds.length - 1
+      ].reduce((acc, curr) => {
+        acc[curr.exerciseId] = curr.completed;
+        return acc;
+      }, {});
+
       exo = workoutDetails.WorkoutRounds[0].Rounds.RoundExercises.find(
-        (exercise) =>
-          workoutSession.rounds[workoutSession.rounds.length - 1].some(
-            (finishedExercise) =>
-              finishedExercise.exerciseId === exercise.exerciseId &&
-              !finishedExercise.completed
-          )
+        (exercise) => {
+          return (
+            lastRoundExercises[exercise.exerciseId] === undefined ||
+            !lastRoundExercises[exercise.exerciseId]
+          );
+        }
       );
     } else {
       exo = workoutDetails.WorkoutRounds[0].Rounds.RoundExercises.find(
