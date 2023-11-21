@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 import { useTimer, useStopwatch } from "react-timer-hook";
 
@@ -36,6 +37,7 @@ export default function WorkoutInProgress() {
     stickerVideo: "",
   });
   const [restTime, setRestTime] = useState(10);
+  const { data: session } = useSession();
   const { workoutDetails } = useWorkoutDetailsStore();
   const {
     workoutSession,
@@ -52,6 +54,13 @@ export default function WorkoutInProgress() {
     error: errorWorkoutProgress,
     isLoading: isLoadingWorkoutProgress,
     request: requestWorkoutProgress,
+  } = useApiRequest();
+
+  const {
+    data: dataWorkoutCompleted,
+    error: errorWorkoutCompleted,
+    isLoading: isLoadingWorkoutCompleted,
+    request: requestWorkoutCompleted,
   } = useApiRequest();
 
   const time = new Date();
@@ -114,6 +123,7 @@ export default function WorkoutInProgress() {
   useEffect(() => {
     if (roundFinished && currentRound === numberRoundsToDo) {
       setWorkoutCompleted(true);
+      updateWorkoutToCompleted();
       pause();
       watchPause();
       endWorkout();
@@ -285,6 +295,14 @@ export default function WorkoutInProgress() {
     } else {
       watchStart();
     }
+  }
+
+  function updateWorkoutToCompleted() {
+    requestWorkoutCompleted("/api/wod/session-update", "PUT", {
+      email: session.user.email,
+      workoutId: workoutDetails.id,
+      idUserWorkoutSession: workoutSession.userSessionWorkoutId,
+    });
   }
 
   return (
