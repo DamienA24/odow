@@ -1,0 +1,11 @@
+@import "../../../../../styles/variables";
+
+.containerRoundFinish {
+  background-color: $secondary-color;
+  p {
+    text-align: center;
+    font-weight: 600;
+    font-size: 30px;
+    margin: 10px 0;
+  }
+}
