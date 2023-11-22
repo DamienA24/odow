@@ -18,7 +18,6 @@ const handler = async (req, res) => {
       roundNumber,
       exerciseId
     );
-    console.log("workoutProgressExist", workoutProgressExist);
     if (workoutProgressExist) {
       const result = {
         message: "progress-exist",

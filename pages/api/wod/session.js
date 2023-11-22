@@ -36,18 +36,30 @@ const handler = async (req, res) => {
         const userWorkoutProgress = await fetchUserWorkoutProgress(
           userWorkoutSessionExist.id
         );
-        const workoutProgress = formateWorkoutSession(userWorkoutProgress);
-        const sessionDetails = {
-          userSessionWorkoutId: userWorkoutSessionExist.id,
-          workoutId: userWorkoutSessionExist.workoutId,
-          userId: userWorkoutSessionExist.userId,
-          preStart: true,
-          rounds: workoutProgress,
-        };
-        return res.json({
-          message: "Session exists",
-          sessionDetails,
-        });
+        if (userWorkoutProgress.length) {
+          const workoutProgress = formateWorkoutSession(userWorkoutProgress);
+          const sessionDetails = {
+            userSessionWorkoutId: userWorkoutSessionExist.id,
+            workoutId: userWorkoutSessionExist.workoutId,
+            userId: userWorkoutSessionExist.userId,
+            preStart: true,
+            rounds: workoutProgress,
+          };
+          return res.json({
+            message: "Session exists",
+            sessionDetails,
+          });
+        } else {
+          await removeUserWorkoutProgress(userWorkoutSessionExist.id);
+          await removeUserWorkoutIdSession(userId.id, workoutId);
+          const startSession = await startUserWorkout(
+            userId.id,
+            workoutId,
+            date
+          );
+
+          return res.json(startSession);
+        }
       }
 
       const workoutProgressDeleted = await removeUserWorkoutProgress(
