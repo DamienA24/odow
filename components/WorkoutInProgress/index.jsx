@@ -17,6 +17,7 @@ import RoundFinish from "./components/RoundFinish";
 import TotalTime from "./components/TotalTime";
 import TotalReps from "./components/TotalReps";
 import Rest from "./components/Rest";
+import BackHome from "../BackHome";
 
 import { useApiRequest } from "hooks";
 
@@ -370,6 +371,7 @@ export default function WorkoutInProgress() {
           />
           <TotalReps />
           <WorkoutCompleted />
+          <BackHome />
         </>
       ) : (
         <>
