@@ -27,7 +27,7 @@ export default function WorkoutInProgress() {
   const [currentRound, setCurrentRound] = useState(1);
   const [restBetweenRound, setRestBetweenRound] = useState(60);
   const [roundFinished, setRoundFinished] = useState(false);
-  const [offsetWatch, setOffsetWatch] = useState(new Date(0));
+
   const [displayComponents, setDisplayComponents] = useState(false);
   const [exercise, setExercise] = useState({
     name: "",
@@ -71,15 +71,22 @@ export default function WorkoutInProgress() {
     expiryTimestamp: time,
     onExpire: nextExercise,
   });
-
+  const stopwatchOffset = new Date();
+  stopwatchOffset.setSeconds(
+    stopwatchOffset.getSeconds() + workoutSession.totalSecondsSpent
+  );
   const {
+    totalSeconds: watchTotalSeconds,
     seconds: watchSeconds,
     minutes: watchMinutes,
     hours: watchHours,
     isRunning: watchIsRunning,
     start: watchStart,
     pause: watchPause,
-  } = useStopwatch({ autoStart: false, offsetTimestamp: offsetWatch });
+  } = useStopwatch({
+    autoStart: false,
+    offsetTimestamp: stopwatchOffset,
+  });
 
   useEffect(() => {
     if (data) {
@@ -113,8 +120,6 @@ export default function WorkoutInProgress() {
 
   useEffect(() => {
     findNextExercise();
-    const now = new Date();
-    setOffsetWatch(now);
 
     const { rest, number } = workoutDetails.WorkoutRounds[0].Rounds;
     setRestBetweenRound(rest);
@@ -145,6 +150,7 @@ export default function WorkoutInProgress() {
       roundNumber,
       roundId: workoutDetails.WorkoutRounds[0].roundId,
       rest: exercise.rest,
+      totalSecondsSpent: watchTotalSeconds,
     });
     if (callByUser) setUserSkippedTimerRest(true);
   }
@@ -172,11 +178,13 @@ export default function WorkoutInProgress() {
       exerciseFinished;
 
     requestWorkoutProgress("/api/wod/progress-update", "PUT", {
+      userWorkoutSessionId: workoutSession.userSessionWorkoutId,
       idUserWorkoutProgress,
       exerciseId,
       roundNumber,
       roundId,
       rest,
+      totalSecondsSpent: watchTotalSeconds,
     });
   }
 
@@ -319,7 +327,7 @@ export default function WorkoutInProgress() {
         ""
       ) : !workoutSession.start ? (
         <>
-          <Rest rest={totalSeconds} />
+          <Rest rest={totalSeconds} sessionStart={false} />
           <div>
             <NextExercise reps={exercise.reps} name={exercise.name} />
             <ControlTime
@@ -370,7 +378,7 @@ export default function WorkoutInProgress() {
             minutes={watchMinutes}
             seconds={watchSeconds}
           />
-          <Rest rest={totalSeconds} />
+          <Rest rest={totalSeconds} roundFinished={roundFinished} />
           {roundFinished ? <RoundFinish round={currentRound} /> : ""}
           <NextExercise reps={exercise.reps} name={exercise.name} />
           <ControlTime
