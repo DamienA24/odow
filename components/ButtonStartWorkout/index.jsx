@@ -15,7 +15,6 @@ export default function ButtonStartWorkout() {
   const { workoutDetails } = useWorkoutDetailsStore();
   const { workoutSession, updateWorkoutSession, resumeWorkout } =
     useWorkoutSession();
-  //TODO MANAGE IF SESSION NOT STARTED, ERROR OR WHATEVER
   const handleStartClick = () => {
     if (workoutSession.returnStart) {
       const session = {
@@ -25,6 +24,7 @@ export default function ButtonStartWorkout() {
       updateWorkoutSession(session);
       return;
     }
+    //TODO MANAGE IF SESSION NOT STARTED, ERROR OR WHATEVER
     request("/api/wod/session", "POST", {
       email: session.user.email,
       workoutId: workoutDetails.id,

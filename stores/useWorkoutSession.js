@@ -7,6 +7,7 @@ const exercise = {
   exerciseId: null,
   roundNumber: null,
   rest: null,
+  completed: false,
 };
 
 const initialWorkoutSession = () => ({
@@ -14,13 +15,15 @@ const initialWorkoutSession = () => ({
   userId: "",
   workoutId: null,
   preStart: false,
-  returnPrevious: false,
+  returnNContinue: false,
   returnStart: false,
   start: false,
   end: false,
   pause: false,
+  rest: false,
   resumed: false,
   rounds: [],
+  totalSecondsSpent: 0,
 });
 
 const useWorkoutSession = create(

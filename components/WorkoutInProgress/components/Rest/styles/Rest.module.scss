@@ -7,5 +7,15 @@
     font-size: 170px;
     margin: 0;
     text-align: center;
+    @media (max-width: 380px) {
+      font-size: 130px;
+    }
+  }
+  p:nth-child(2) {
+    background-color: $secondary-color;
+    color: $primary-color;
+    font-weight: 600;
+    font-size: 30px;
+    margin: 10px 0;
   }
 }

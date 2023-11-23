@@ -16,6 +16,7 @@ import {
 } from "lib/user/userService";
 
 import formateWorkoutSession from "lib/formateWorkoutSession";
+import allowedMethods from "lib/allowedMethods";
 import withValidation from "lib/withValidation";
 import errorHandler from "lib/errorHandler";
 import withAuth from "lib/withAuth";
@@ -35,27 +36,37 @@ const handler = async (req, res) => {
         const userWorkoutProgress = await fetchUserWorkoutProgress(
           userWorkoutSessionExist.id
         );
-        const workoutProgress = formateWorkoutSession(userWorkoutProgress);
-        const sessionDetails = {
-          userSessionWorkoutId: userWorkoutSessionExist.id,
-          workoutId: userWorkoutSessionExist.workoutId,
-          userId: userWorkoutSessionExist.userId,
-          preStart: true,
-          rounds: workoutProgress,
-        };
-        return res.json({
-          message: "Session exists",
-          sessionDetails,
-        });
+        if (userWorkoutProgress.length) {
+          const workoutProgress = formateWorkoutSession(userWorkoutProgress);
+          const sessionDetails = {
+            userSessionWorkoutId: userWorkoutSessionExist.id,
+            workoutId: userWorkoutSessionExist.workoutId,
+            userId: userWorkoutSessionExist.userId,
+            preStart: true,
+            totalSecondsSpent: userWorkoutSessionExist.totalSecondsSpent,
+            rounds: workoutProgress,
+          };
+          return res.json({
+            message: "Session exists",
+            sessionDetails,
+          });
+        } else {
+          await removeUserWorkout(
+            userWorkoutSessionExist.id,
+            userId.id,
+            workoutId
+          );
+          const startSession = await startUserWorkout(
+            userId.id,
+            workoutId,
+            date
+          );
+
+          return res.json(startSession);
+        }
       }
 
-      const workoutProgressDeleted = await removeUserWorkoutProgress(
-        userWorkoutSessionExist.id
-      );
-      const sessionRemoved = await removeUserWorkoutIdSession(
-        userId.id,
-        workoutId
-      );
+      await removeUserWorkout(userWorkoutSessionExist.id, userId.id, workoutId);
       return res.json({ message: "Session removed" });
     }
     const startSession = await startUserWorkout(userId.id, workoutId, date);
@@ -66,10 +77,17 @@ const handler = async (req, res) => {
   }
 };
 
-export default withAuth(
-  withValidation(
-    workoutRestartSessionSchema,
-    userEmailSchema,
-    workoutIdSchema
-  )(handler)
+async function removeUserWorkout(sessionId, userId, workoutId) {
+  await removeUserWorkoutProgress(sessionId);
+  await removeUserWorkoutIdSession(sessionId, userId.id, workoutId);
+}
+
+export default allowedMethods(["POST"])(
+  withAuth(
+    withValidation(
+      workoutRestartSessionSchema,
+      userEmailSchema,
+      workoutIdSchema
+    )(handler)
+  )
 );

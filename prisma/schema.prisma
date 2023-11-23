@@ -153,6 +153,7 @@ model UserWorkoutSessions {
   workoutId           Int
   startDate           DateTime              @db.DateTime(0)
   endDate             DateTime?             @db.DateTime(0)
+  totalSecondsSpent   Int?
   UserWorkoutProgress UserWorkoutProgress[]
   User                User                  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutsessions_ibfk_1")
   Workouts            Workouts              @relation(fields: [workoutId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userworkoutsessions_ibfk_2")

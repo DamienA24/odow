@@ -7,15 +7,6 @@ import Image from "next/image";
 import closeButton from "public/icons/close.svg";
 import styles from "./styles/ExerciseModal.module.scss";
 
-const opts = {
-  height: "390",
-  width: "640",
-  playerVars: {
-    // https://developers.google.com/youtube/player_parameters
-    autoplay: 1,
-  },
-};
-
 const ExerciseModal = ({ isOpen, onClose, exercise }) => {
   if (!isOpen) return null;
 

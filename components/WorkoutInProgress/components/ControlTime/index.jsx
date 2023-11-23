@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import Image from "next/image";
 
 import styles from "./styles/ControlTime.module.scss";
@@ -9,40 +11,51 @@ import playIcon from "./icons/play.svg";
 
 export default function ControlTime({
   isRunning,
-  start,
   pause,
   resume,
   returnPrevious,
+  nextExercise,
+  workoutStart = false,
+  elapsedTimeWorkout = false,
 }) {
+  useEffect(() => {
+    if (workoutStart && !isRunning && elapsedTimeWorkout) resume();
+  }, []);
   return (
     <div>
       <div className={styles.containerControlTime}>
-        <Image
-          src={backwards}
-          width={100}
-          height={100}
-          alt="icon image"
-          onClick={returnPrevious}
-        />
+        {workoutStart ? (
+          ""
+        ) : (
+          <Image
+            src={backwards}
+            alt="icon image"
+            onClick={returnPrevious}
+            className={styles.controlTime}
+          />
+        )}
 
         {isRunning ? (
           <Image
             src={pauseIcon}
-            width={100}
-            height={100}
+            className={styles.controlTime}
             onClick={pause}
             alt="icon image"
           />
         ) : (
           <Image
             src={playIcon}
-            width={100}
-            height={100}
+            className={styles.controlTime}
             onClick={resume}
             alt="icon image"
           />
         )}
-        <Image src={forwards} width={100} height={100} alt="icon image" />
+        <Image
+          src={forwards}
+          className={styles.controlTime}
+          alt="icon image"
+          onClick={() => nextExercise(true)}
+        />
       </div>
     </div>
   );

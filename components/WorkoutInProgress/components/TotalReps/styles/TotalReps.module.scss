@@ -1,0 +1,27 @@
+@import "../../../../../styles/variables";
+
+.containerTotalReps {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  h2 {
+    color: $secondary-color;
+    font-weight: 700;
+    font-size: 50px;
+    text-align: center;
+    margin: 0;
+    @media (max-width: 380px) {
+      font-size: 40px;
+    }
+  }
+  span {
+    color: $secondary-color;
+    font-weight: 600;
+    font-size: 30px;
+    margin: 0;
+    text-align: center;
+    @media (max-width: 380px) {
+      font-size: 25px;
+    }
+  }
+}

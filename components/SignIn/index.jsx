@@ -15,7 +15,7 @@ function Form() {
     <div className={styles.containerForm}>
       {session ? (
         /*//TODO CREATE COMPONENT BUTTON SIGNOUT* */
-        <button onClick={() => signOut()}>Sign Out</button>
+        <button onClick={() => signOut()}>Sign out</button>
       ) : (
         <button onClick={() => signIn(undefined, { callbackUrl: "/workout" })}>
           Sign in
