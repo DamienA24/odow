@@ -43,6 +43,7 @@ const handler = async (req, res) => {
             workoutId: userWorkoutSessionExist.workoutId,
             userId: userWorkoutSessionExist.userId,
             preStart: true,
+            totalSecondsSpent: userWorkoutSessionExist.totalSecondsSpent,
             rounds: workoutProgress,
           };
           return res.json({

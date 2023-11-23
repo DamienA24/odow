@@ -1,5 +1,10 @@
-import { updateWorkoutProgressSchema } from "lib/workout/workoutSchemas";
+import {
+  workoutSessionTotalSecondsSpent,
+  updateWorkoutProgressSchema,
+  workoutProgressSchema,
+} from "lib/workout/workoutSchemas";
 
+import { completeUserWorkoutSessionTotalSecondsSpent } from "lib/user/userModel";
 import { updateUserWorkoutProgress } from "lib/workout/workoutService";
 import allowedMethods from "lib/allowedMethods";
 import withValidation from "lib/withValidation";
@@ -8,12 +13,23 @@ import withAuth from "lib/withAuth";
 
 const handler = async (req, res) => {
   try {
-    const { idUserWorkoutProgress, exerciseId, roundNumber, roundId, rest } =
-      req.validatedBody;
+    const {
+      userWorkoutSessionId,
+      idUserWorkoutProgress,
+      totalSecondsSpent,
+      exerciseId,
+      roundNumber,
+      roundId,
+      rest,
+    } = req.validatedBody;
     const date = new Date();
     const updateProgression = await updateUserWorkoutProgress(
       idUserWorkoutProgress,
       date
+    );
+    await completeUserWorkoutSessionTotalSecondsSpent(
+      userWorkoutSessionId,
+      totalSecondsSpent
     );
     const result = {
       ...req.validatedBody,
@@ -26,5 +42,11 @@ const handler = async (req, res) => {
 };
 
 export default allowedMethods(["PUT"])(
-  withAuth(withValidation(updateWorkoutProgressSchema)(handler))
+  withAuth(
+    withValidation(
+      workoutSessionTotalSecondsSpent,
+      updateWorkoutProgressSchema,
+      workoutProgressSchema
+    )(handler)
+  )
 );

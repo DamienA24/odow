@@ -1,4 +1,8 @@
-import { workoutProgressSchema } from "lib/workout/workoutSchemas";
+import { completeUserWorkoutSessionTotalSecondsSpent } from "lib/user/userModel";
+import {
+  workoutSessionTotalSecondsSpent,
+  workoutProgressSchema,
+} from "lib/workout/workoutSchemas";
 
 import {
   insertUserWorkoutProgress,
@@ -11,8 +15,14 @@ import withAuth from "lib/withAuth";
 
 const handler = async (req, res) => {
   try {
-    const { userWorkoutSessionId, exerciseId, roundNumber, roundId, rest } =
-      req.validatedBody;
+    const {
+      userWorkoutSessionId,
+      totalSecondsSpent,
+      exerciseId,
+      roundNumber,
+      roundId,
+      rest,
+    } = req.validatedBody;
     const workoutProgressExist = await verifyWorkoutProgressExit(
       userWorkoutSessionId,
       roundNumber,
@@ -33,6 +43,10 @@ const handler = async (req, res) => {
         date,
         rest
       );
+      await completeUserWorkoutSessionTotalSecondsSpent(
+        userWorkoutSessionId,
+        totalSecondsSpent
+      );
       const result = {
         ...req.validatedBody,
         idUserWorkoutProgress: addUserProgression.id,
@@ -46,5 +60,10 @@ const handler = async (req, res) => {
 };
 
 export default allowedMethods(["POST"])(
-  withAuth(withValidation(workoutProgressSchema)(handler))
+  withAuth(
+    withValidation(
+      workoutSessionTotalSecondsSpent,
+      workoutProgressSchema
+    )(handler)
+  )
 );

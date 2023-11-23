@@ -23,6 +23,7 @@ const initialWorkoutSession = () => ({
   rest: false,
   resumed: false,
   rounds: [],
+  totalSecondsSpent: 0,
 });
 
 const useWorkoutSession = create(
