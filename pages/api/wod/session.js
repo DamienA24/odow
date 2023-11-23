@@ -50,8 +50,11 @@ const handler = async (req, res) => {
             sessionDetails,
           });
         } else {
-          await removeUserWorkoutProgress(userWorkoutSessionExist.id);
-          await removeUserWorkoutIdSession(userId.id, workoutId);
+          await removeUserWorkout(
+            userWorkoutSessionExist.id,
+            userId.id,
+            workoutId
+          );
           const startSession = await startUserWorkout(
             userId.id,
             workoutId,
@@ -62,13 +65,7 @@ const handler = async (req, res) => {
         }
       }
 
-      const workoutProgressDeleted = await removeUserWorkoutProgress(
-        userWorkoutSessionExist.id
-      );
-      const sessionRemoved = await removeUserWorkoutIdSession(
-        userId.id,
-        workoutId
-      );
+      await removeUserWorkout(userWorkoutSessionExist.id, userId.id, workoutId);
       return res.json({ message: "Session removed" });
     }
     const startSession = await startUserWorkout(userId.id, workoutId, date);
@@ -78,6 +75,11 @@ const handler = async (req, res) => {
     errorHandler(error, req, res);
   }
 };
+
+async function removeUserWorkout(sessionId, userId, workoutId) {
+  await removeUserWorkoutProgress(sessionId);
+  await removeUserWorkoutIdSession(sessionId, userId.id, workoutId);
+}
 
 export default allowedMethods(["POST"])(
   withAuth(
