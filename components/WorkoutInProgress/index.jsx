@@ -13,11 +13,12 @@ import ExerciseInProgress from "./components/ExerciseInProgress";
 import WorkoutCompleted from "./components/WorkoutCompleted";
 import NextExercise from "./components/NextExercise";
 import ControlTime from "./components/ControlTime";
+import RoundFinish from "./components/RoundFinish";
+import TotalTime from "./components/TotalTime";
+import TotalReps from "./components/TotalReps";
 import Rest from "./components/Rest";
 
 import { useApiRequest } from "hooks";
-import TotalTime from "./components/TotalTime";
-import TotalReps from "./components/TotalReps";
 
 export default function WorkoutInProgress() {
   const [userSkippedTimerRest, setUserSkippedTimerRest] = useState(false);
@@ -85,7 +86,7 @@ export default function WorkoutInProgress() {
       if (!workoutSession.start) {
         startWorkout();
       }
-      addExerciseInRound(data);
+      if (data.message !== "progress-exist") addExerciseInRound(data);
       pause();
       setRoundFinished(false);
       const updateSession = { rest: false };
@@ -104,11 +105,11 @@ export default function WorkoutInProgress() {
   }, [dataWorkoutProgress]);
 
   useEffect(() => {
-    if (exercise) {
+    if (exercise.name) {
       findTimeRest();
       setDisplayComponents(true);
     }
-  }, [exercise]);
+  }, [exercise.name]);
 
   useEffect(() => {
     findNextExercise();
@@ -133,29 +134,27 @@ export default function WorkoutInProgress() {
   async function nextExercise(callByUser = false) {
     if (userSkippedTimerRest) return;
     const roundNumber = workoutSession.returnNContinue
-      ? workoutSession.rounds.length
-      : roundFinished
-      ? currentRound + 1
-      : currentRound;
+      ? getNextRoundForContinuation(workoutSession, roundFinished)
+      : getNextRoundNormally(roundFinished, currentRound);
     setDisplayComponents(false);
     setCurrentRound(roundNumber);
-    if (workoutSession.returnNContinue && !roundFinished) {
-      pause();
-      setRoundFinished(false);
-      const updateSession = { rest: false };
-      updateWorkoutSession(updateSession);
-      setDisplayComponents(true);
-    } else {
-      request("/api/wod/progress", "POST", {
-        userWorkoutSessionId: workoutSession.userSessionWorkoutId,
-        exerciseId: exercise.id,
-        roundNumber,
-        roundId: workoutDetails.WorkoutRounds[0].roundId,
-        rest: exercise.rest,
-      });
-    }
 
+    request("/api/wod/progress", "POST", {
+      userWorkoutSessionId: workoutSession.userSessionWorkoutId,
+      exerciseId: exercise.id,
+      roundNumber,
+      roundId: workoutDetails.WorkoutRounds[0].roundId,
+      rest: exercise.rest,
+    });
     if (callByUser) setUserSkippedTimerRest(true);
+  }
+
+  function getNextRoundForContinuation(session, isRoundFinished) {
+    return isRoundFinished ? session.rounds.length + 1 : session.rounds.length;
+  }
+
+  function getNextRoundNormally(isRoundFinished, currentRound) {
+    return isRoundFinished ? currentRound + 1 : currentRound;
   }
 
   function nextRest() {
@@ -260,6 +259,8 @@ export default function WorkoutInProgress() {
           stickerVideo,
         });
         return;
+      }
+      if (workoutSession.returnNContinue && !nextExerciseCurrentRound) {
       }
       setRoundFinished(true);
     }
@@ -370,11 +371,7 @@ export default function WorkoutInProgress() {
             seconds={watchSeconds}
           />
           <Rest rest={totalSeconds} />
-          {roundFinished ? (
-            <p style={{ color: "red" }}>Round {currentRound} finished</p>
-          ) : (
-            ""
-          )}
+          {roundFinished ? <RoundFinish round={currentRound} /> : ""}
           <NextExercise reps={exercise.reps} name={exercise.name} />
           <ControlTime
             workoutStart={true}
