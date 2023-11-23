@@ -116,6 +116,10 @@ export default function WorkoutInProgress() {
     if (exercise.name) {
       findTimeRest();
       setDisplayComponents(true);
+      const roundNumber = workoutSession.returnNContinue
+        ? getNextRoundForContinuation(workoutSession, roundFinished)
+        : getNextRoundNormally(roundFinished, currentRound);
+      setCurrentRound(roundNumber);
     }
   }, [exercise.name]);
 
@@ -139,16 +143,16 @@ export default function WorkoutInProgress() {
 
   async function nextExercise(callByUser = false) {
     if (userSkippedTimerRest) return;
-    const roundNumber = workoutSession.returnNContinue
+    /*  const roundNumber = workoutSession.returnNContinue
       ? getNextRoundForContinuation(workoutSession, roundFinished)
       : getNextRoundNormally(roundFinished, currentRound);
     setDisplayComponents(false);
-    setCurrentRound(roundNumber);
+    setCurrentRound(roundNumber); */
 
     request("/api/wod/progress", "POST", {
       userWorkoutSessionId: workoutSession.userSessionWorkoutId,
       exerciseId: exercise.id,
-      roundNumber,
+      roundNumber: currentRound,
       roundId: workoutDetails.WorkoutRounds[0].roundId,
       rest: exercise.rest,
       totalSecondsSpent: watchTotalSeconds,
@@ -269,8 +273,7 @@ export default function WorkoutInProgress() {
         });
         return;
       }
-      if (workoutSession.returnNContinue && !nextExerciseCurrentRound) {
-      }
+
       setRoundFinished(true);
     }
 
