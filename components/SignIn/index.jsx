@@ -18,7 +18,7 @@ function Form() {
         <button onClick={() => signOut()}>Sign out</button>
       ) : (
         <button onClick={() => signIn(undefined, { callbackUrl: "/workout" })}>
-          Sign in
+          Sign In
         </button>
       )}
     </div>
