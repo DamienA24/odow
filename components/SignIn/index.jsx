@@ -7,9 +7,9 @@ function Form() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  if (session) {
+  /*  if (session) {
     router.push("/workout");
-  }
+  } */
 
   return (
     <div className={styles.containerForm}>
