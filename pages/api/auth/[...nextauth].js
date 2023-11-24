@@ -7,6 +7,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+console.log("process.env.VERCEL_ENV", process.env.VERCEL_ENV);
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),

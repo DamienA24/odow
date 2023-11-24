@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 function Form() {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log("process.env.VERCEL_ENV", process.env.VERCEL_ENV);
   if (session) {
     router.push("/workout");
   }
