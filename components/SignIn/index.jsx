@@ -6,10 +6,10 @@ import { useRouter } from "next/router";
 function Form() {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log("session", session);
-  /*  if (session) {
+
+  if (session) {
     router.push("/workout");
-  } */
+  }
 
   return (
     <div className={styles.containerForm}>
