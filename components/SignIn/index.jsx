@@ -7,7 +7,7 @@ function Form() {
   const router = useRouter();
   const { data: session } = useSession();
   if (session) {
-    router.push("/workout");
+    router.push("app/workout");
   }
 
   return (
