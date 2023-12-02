@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+
 import styles from "styles/Home.module.scss";
 
 import { productData, productDataTwo } from "components/DataHomePage/data";
@@ -6,10 +9,16 @@ import DataHomePage2 from "components/DataHomePage2";
 import Feature from "components/Feature";
 import Hero from "components/Hero";
 
-import SignIn from "components/SignIn";
 import Footer from "components/Footer";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      router.push("/app");
+    }
+  }, []);
   return (
     <div className={styles.containerHome}>
       <Hero />

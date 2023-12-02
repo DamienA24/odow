@@ -10,13 +10,16 @@
   @media (max-width: 380px) {
     height: 14vh;
   }
+  @media (min-width: 720px) {
+    height: 20vh;
+  }
   .imageYoutube {
     width: 80px;
     @media (max-width: 380px) {
       width: 70px;
     }
     @media (min-width: 720px) {
-      width: 130px;
+      width: 160px;
     }
   }
 }

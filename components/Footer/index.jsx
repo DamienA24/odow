@@ -15,7 +15,7 @@ function Footer() {
       <div className={styles.containerWrapFooter}>
         <section>
           <div className={styles.containerSocialMediaWrap}>
-            <Link href="/">One Day One Workout</Link>
+            <Link href="/app">One Day One Workout</Link>
             <div className={styles.containerIcons}>
               <a
                 href="/"
