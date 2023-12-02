@@ -27,6 +27,8 @@ const ExerciseModal = ({ isOpen, onClose, exercise }) => {
           height="315"
           url={exercise.urlVideo}
           controls={true}
+          loop={true}
+          className={styles.containerPlayer}
         />
         <h2>{exercise.name}</h2>
         <p>{exercise.description}</p>
