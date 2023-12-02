@@ -1,0 +1,39 @@
+@import "../../../styles/variables";
+
+.containerFooter {
+  background-color: $primary-color;
+}
+
+.containerWrapFooter {
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1300px;
+  margin: 0 auto;
+
+  section {
+    max-width: 1300px;
+    width: 100%;
+  }
+
+  .containerSocialMediaWrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 16px auto 0 auto;
+
+    @media screen and (max-width: 820px) {
+      flex-direction: column;
+    }
+  }
+
+  .containerIcons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 240px;
+  }
+}

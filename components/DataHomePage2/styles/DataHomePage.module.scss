@@ -1,0 +1,51 @@
+.containerDataHomePage {
+  min-height: 100vh;
+  padding: 5rem calc((100vw - 1300px) / 2);
+  background: #150f0f;
+  color: #fff;
+
+  h1 {
+    font-size: clamp(2rem, 2.5vw, 3rem);
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+}
+
+.wrapperDataHomePage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.containerCards {
+  margin: 0 2rem;
+  line-height: 2;
+  width: 300px;
+
+  .imageData {
+    height: 125px;
+    min-width: 300px;
+    max-width: 100%;
+  }
+
+  .containerInfos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+
+    h2 {
+      font-weight: 400;
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      font-size: 20px;
+      color: #fff;
+    }
+  }
+}
