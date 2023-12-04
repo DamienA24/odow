@@ -1,19 +1,40 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+
 import styles from "styles/Home.module.scss";
-import SignIn from "components/SignIn";
+
+import { productData, productDataTwo } from "components/DataHomePage/data";
+import DataHomePage from "components/DataHomePage";
+import DataHomePage2 from "components/DataHomePage2";
+import Feature from "components/Feature";
+import Hero from "components/Hero";
+
+import Footer from "components/Footer";
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <div className={styles.containerApplicationTitle}>
-        <h1>ONE DAY</h1>
-        <h1>ONE WORKOUT</h1>
-      </div>
-      <div className={styles.containerApplicationDescription}>
-        <h2>Get Started Free</h2>
-        <p>Free Forever. No Credit Card Needed</p>
-      </div>
+  const router = useRouter();
 
-      <SignIn />
+  useEffect(() => {
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      router.push("/app");
+    }
+  }, []);
+  return (
+    <div className={styles.containerHome}>
+      <Hero />
+      <DataHomePage
+        heading="Discover the simplicity of staying fit without ever wasting time choosing."
+        data={productData}
+      />
+      <Feature />
+      <DataHomePage2
+        heading="Every day a new challenge."
+        data={productDataTwo}
+      />
+      <Footer />
+      {/*  <Feature2 />
+      <Footer /> */}
+      {/* <SignIn /> */}
     </div>
   );
 }

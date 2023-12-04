@@ -2,6 +2,9 @@
 
 .containerNextExercise {
   margin: 0px 10px 0px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   p {
     color: $secondary-color;
     font-weight: 700;

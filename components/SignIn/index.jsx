@@ -6,9 +6,8 @@ import { useRouter } from "next/router";
 function Form() {
   const router = useRouter();
   const { data: session } = useSession();
-
   if (session) {
-    router.push("/workout");
+    router.push("app/workout");
   }
 
   return (
@@ -18,7 +17,7 @@ function Form() {
         <button onClick={() => signOut()}>Sign out</button>
       ) : (
         <button onClick={() => signIn(undefined, { callbackUrl: "/workout" })}>
-          Sign in
+          Sign In
         </button>
       )}
     </div>

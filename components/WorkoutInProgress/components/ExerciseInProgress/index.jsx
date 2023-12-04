@@ -14,6 +14,7 @@ export default function ExerciseInProgress({ reps, name, urlVideo }) {
           muted={true}
           playing={true}
           className={styles.containerReactPlayer}
+          loop={true}
         />
         <p>
           {reps} {name}
