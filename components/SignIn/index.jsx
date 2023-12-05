@@ -16,7 +16,9 @@ function Form() {
         /*//TODO CREATE COMPONENT BUTTON SIGNOUT* */
         <button onClick={() => signOut()}>Sign out</button>
       ) : (
-        <button onClick={() => signIn(undefined, { callbackUrl: "/workout" })}>
+        <button
+          onClick={() => signIn(undefined, { callbackUrl: "/app/workout" })}
+        >
           Sign In
         </button>
       )}
