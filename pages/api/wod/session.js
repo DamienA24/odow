@@ -51,11 +51,7 @@ const handler = async (req, res) => {
             sessionDetails,
           });
         } else {
-          await removeUserWorkout(
-            userWorkoutSessionExist.id,
-            userId.id,
-            workoutId
-          );
+          removeUserWorkout(userWorkoutSessionExist.id, userId.id, workoutId);
           const startSession = await startUserWorkout(
             userId.id,
             workoutId,
@@ -66,7 +62,7 @@ const handler = async (req, res) => {
         }
       }
 
-      await removeUserWorkout(userWorkoutSessionExist.id, userId.id, workoutId);
+      removeUserWorkout(userWorkoutSessionExist.id, userId.id, workoutId);
       return res.json({ message: "Session removed" });
     }
     const startSession = await startUserWorkout(userId.id, workoutId, date);
