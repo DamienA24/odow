@@ -16,6 +16,7 @@ import ControlTime from "./components/ControlTime";
 import RoundFinish from "./components/RoundFinish";
 import TotalTime from "./components/TotalTime";
 import TotalReps from "./components/TotalReps";
+import Loader from "./components/Loader";
 import Rest from "./components/Rest";
 import BackHome from "../BackHome";
 
@@ -320,11 +321,18 @@ export default function WorkoutInProgress() {
       idUserWorkoutSession: workoutSession.userSessionWorkoutId,
     });
   }
-
+  const shouldNotDisplayContent =
+    isLoading || isLoadingWorkoutProgress || !displayComponents;
   return (
-    <div className={styles.containerWorkoutInProgress}>
-      {isLoading || isLoadingWorkoutProgress || !displayComponents ? (
-        ""
+    <div
+      className={
+        shouldNotDisplayContent
+          ? `${styles.containerWorkoutInProgress} ${styles.containerLoader}`
+          : styles.containerWorkoutInProgress
+      }
+    >
+      {shouldNotDisplayContent ? (
+        <Loader />
       ) : !workoutSession.start ? (
         <>
           <Rest rest={totalSeconds} sessionStart={false} />
@@ -384,12 +392,12 @@ export default function WorkoutInProgress() {
           <NextExercise reps={exercise.reps} name={exercise.name} />
           <ControlTime
             workoutStart={true}
-            isRunning={isRunning}
+            isRunning={watchIsRunning}
             start={start}
             pause={handlePause}
             resume={handleResume}
             nextExercise={nextExercise}
-            elapsedTimeWorkout={false}
+            elapsedTimeWorkout={true}
           />
         </>
       )}
