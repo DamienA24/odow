@@ -21,6 +21,7 @@ export const authOptions = {
       return true;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const authHandler = NextAuth(authOptions);
