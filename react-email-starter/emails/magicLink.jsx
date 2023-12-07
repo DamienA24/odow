@@ -17,7 +17,7 @@ const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "";
 
-export function MagicLink({ magicLink = "" }) {
+export default function MagicLink({ magicLink = "" }) {
   return (
     <Html>
       <Head />
