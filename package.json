@@ -9,8 +9,6 @@
     "@auth/prisma-adapter": "^1.0.0",
     "@auth0/nextjs-auth0": "^2.6.2",
     "@prisma/client": "^4.16.2",
-    "@react-email/components": "^0.0.12",
-    "@react-email/render": "^0.0.10",
     "joi": "^17.11.0",
     "next": "^14.0.0",
     "next-auth": "^4.22.1",
