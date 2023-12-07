@@ -24,12 +24,12 @@ export default function MagicLink({ magicLink = "" }) {
       <Preview>Log in with this magic link.</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Img
+          {/*    <Img
             src={`${baseUrl}/static/odow-logo.png`}
             width={48}
             height={48}
             alt="odow"
-          />
+          /> */}
           <Heading style={heading}>🪄 Your magic link</Heading>
           <Section style={body}>
             <Text style={paragraph}>
@@ -46,7 +46,7 @@ export default function MagicLink({ magicLink = "" }) {
             <br />- ODOW Team
           </Text>
           <Hr style={hr} />
-          <Img
+          {/*  <Img
             src={`${baseUrl}/static/odow-mini-logo.png`}
             width={32}
             height={32}
@@ -55,7 +55,7 @@ export default function MagicLink({ magicLink = "" }) {
               filter: "grayscale(100%)",
               margin: "20px 0",
             }}
-          />
+          /> */}
           <Text style={footer}>onedayoneworkout.com</Text>
         </Container>
       </Body>
