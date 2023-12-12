@@ -77,6 +77,9 @@
     font-family: "Poppins";
     font-weight: 500;
     border: none;
+    @media (min-width: 720px) {
+      width: 20%;
+    }
   }
 
   input {
