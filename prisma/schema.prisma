@@ -83,11 +83,16 @@ model RoundExercises {
   reps       Int
   rest       Int
   order      Int
+  workoutId  Int
   Rounds     Rounds    @relation(fields: [roundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "roundexercises_ibfk_1")
   Exercises  Exercises @relation(fields: [exerciseId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "roundexercises_ibfk_2")
+  Workouts   Workouts @relation(fields: [workoutId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "roundexercises_ibfk_3")
+
 
   @@index([exerciseId], map: "exerciseId")
   @@index([roundId], map: "roundId")
+  @@index([workoutId], map: "workoutId")
+
 }
 
 model Rounds {
@@ -197,6 +202,7 @@ model Workouts {
   calories            Int?
   UserWorkoutSessions UserWorkoutSessions[]
   WorkoutRounds       WorkoutRounds[]
+  RoundExercises      RoundExercises[]
   BodyParts           BodyParts?            @relation(fields: [bodyPartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
 
   @@index([bodyPartId], map: "bodyPartId")
