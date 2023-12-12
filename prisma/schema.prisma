@@ -25,6 +25,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 
@@ -50,6 +51,7 @@ model ExerciseBodyParts {
 
   @@id([exerciseId, bodyPartId])
   @@index([bodyPartId], map: "exercisebodyparts_ibfk_2")
+  @@index([exerciseId])
 }
 
 model Exercises {
@@ -81,11 +83,16 @@ model RoundExercises {
   reps       Int
   rest       Int
   order      Int
+  workoutId  Int
   Rounds     Rounds    @relation(fields: [roundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "roundexercises_ibfk_1")
   Exercises  Exercises @relation(fields: [exerciseId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "roundexercises_ibfk_2")
+  Workouts   Workouts @relation(fields: [workoutId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "roundexercises_ibfk_3")
+
 
   @@index([exerciseId], map: "exerciseId")
   @@index([roundId], map: "roundId")
+  @@index([workoutId], map: "workoutId")
+
 }
 
 model Rounds {
@@ -103,6 +110,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -193,6 +202,7 @@ model Workouts {
   calories            Int?
   UserWorkoutSessions UserWorkoutSessions[]
   WorkoutRounds       WorkoutRounds[]
+  RoundExercises      RoundExercises[]
   BodyParts           BodyParts?            @relation(fields: [bodyPartId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "workouts_ibfk_1")
 
   @@index([bodyPartId], map: "bodyPartId")

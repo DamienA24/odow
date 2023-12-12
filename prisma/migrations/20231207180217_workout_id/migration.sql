@@ -13,7 +13,7 @@ CREATE TABLE `Account` (
     `id_token` TEXT NULL,
     `session_state` VARCHAR(191) NULL,
 
-    INDEX `userId`(`userId`),
+    INDEX `Account_userId_idx`(`userId`),
     UNIQUE INDEX `Account_provider_providerAccountId_key`(`provider`, `providerAccountId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -41,6 +41,7 @@ CREATE TABLE `ExerciseBodyParts` (
     `bodyPartId` INTEGER NOT NULL,
 
     INDEX `exercisebodyparts_ibfk_2`(`bodyPartId`),
+    INDEX `ExerciseBodyParts_exerciseId_idx`(`exerciseId`),
     PRIMARY KEY (`exerciseId`, `bodyPartId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -51,6 +52,7 @@ CREATE TABLE `Exercises` (
     `description` TEXT NULL,
     `difficultyLevelId` INTEGER NULL,
     `urlVideo` VARCHAR(255) NULL,
+    `stickerVideo` VARCHAR(255) NULL,
 
     INDEX `difficultyLevelId`(`difficultyLevelId`),
     PRIMARY KEY (`id`)
@@ -73,9 +75,11 @@ CREATE TABLE `RoundExercises` (
     `reps` INTEGER NOT NULL,
     `rest` INTEGER NOT NULL,
     `order` INTEGER NOT NULL,
+    `workoutId` INTEGER NOT NULL,
 
     INDEX `exerciseId`(`exerciseId`),
     INDEX `roundId`(`roundId`),
+    INDEX `workoutId`(`workoutId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -96,7 +100,7 @@ CREATE TABLE `Session` (
     `expires` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Session_sessionToken_key`(`sessionToken`),
-    INDEX `Session_userId_fkey`(`userId`),
+    INDEX `Session_userId_idx`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -130,6 +134,8 @@ CREATE TABLE `UserWorkoutProgress` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userWorkoutSessionId` INTEGER NOT NULL,
     `roundId` INTEGER NOT NULL,
+    `roundNumber` INTEGER NOT NULL,
+    `rest` INTEGER NOT NULL,
     `exerciseId` INTEGER NOT NULL,
     `startedAt` DATETIME(0) NOT NULL,
     `completedAt` DATETIME(0) NULL,
@@ -147,6 +153,7 @@ CREATE TABLE `UserWorkoutSessions` (
     `workoutId` INTEGER NOT NULL,
     `startDate` DATETIME(0) NOT NULL,
     `endDate` DATETIME(0) NULL,
+    `totalSecondsSpent` INTEGER NULL,
 
     INDEX `userId`(`userId`),
     INDEX `workoutId`(`workoutId`),
@@ -183,58 +190,8 @@ CREATE TABLE `Workouts` (
     `bodyPartId` INTEGER NULL,
     `type` ENUM('simple', 'complexe') NOT NULL DEFAULT 'simple',
     `date` DATE NULL,
+    `calories` INTEGER NULL,
 
     INDEX `bodyPartId`(`bodyPartId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `Account` ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `ExerciseBodyParts` ADD CONSTRAINT `exercisebodyparts_ibfk_1` FOREIGN KEY (`exerciseId`) REFERENCES `Exercises`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `ExerciseBodyParts` ADD CONSTRAINT `exercisebodyparts_ibfk_2` FOREIGN KEY (`bodyPartId`) REFERENCES `BodyParts`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `Exercises` ADD CONSTRAINT `exercises_ibfk_2` FOREIGN KEY (`difficultyLevelId`) REFERENCES `DifficultyLevels`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `RoundExercises` ADD CONSTRAINT `roundexercises_ibfk_1` FOREIGN KEY (`roundId`) REFERENCES `Rounds`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `RoundExercises` ADD CONSTRAINT `roundexercises_ibfk_2` FOREIGN KEY (`exerciseId`) REFERENCES `Exercises`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `Session` ADD CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `UserMetrics` ADD CONSTRAINT `usermetrics_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `UserMetrics` ADD CONSTRAINT `usermetrics_ibfk_2` FOREIGN KEY (`metricId`) REFERENCES `Metrics`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `UserWorkoutProgress` ADD CONSTRAINT `userworkoutprogress_ibfk_1` FOREIGN KEY (`userWorkoutSessionId`) REFERENCES `UserWorkoutSessions`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `UserWorkoutProgress` ADD CONSTRAINT `userworkoutprogress_ibfk_2` FOREIGN KEY (`roundId`) REFERENCES `Rounds`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `UserWorkoutProgress` ADD CONSTRAINT `userworkoutprogress_ibfk_3` FOREIGN KEY (`exerciseId`) REFERENCES `Exercises`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `UserWorkoutSessions` ADD CONSTRAINT `userworkoutsessions_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `UserWorkoutSessions` ADD CONSTRAINT `userworkoutsessions_ibfk_2` FOREIGN KEY (`workoutId`) REFERENCES `Workouts`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `WorkoutRounds` ADD CONSTRAINT `workoutrounds_ibfk_1` FOREIGN KEY (`workoutId`) REFERENCES `Workouts`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `WorkoutRounds` ADD CONSTRAINT `workoutrounds_ibfk_2` FOREIGN KEY (`roundId`) REFERENCES `Rounds`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `Workouts` ADD CONSTRAINT `workouts_ibfk_1` FOREIGN KEY (`bodyPartId`) REFERENCES `BodyParts`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

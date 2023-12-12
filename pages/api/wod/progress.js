@@ -43,7 +43,7 @@ const handler = async (req, res) => {
         date,
         rest
       );
-      await completeUserWorkoutSessionTotalSecondsSpent(
+      completeUserWorkoutSessionTotalSecondsSpent(
         userWorkoutSessionId,
         totalSecondsSpent
       );

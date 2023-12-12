@@ -9,8 +9,9 @@ export default function Home() {
         <h1>ONE WORKOUT</h1>
       </div>
       <div className={styles.containerApplicationDescription}>
-        <h2>Get Started Free</h2>
-        <p>Free Forever. No Credit Card Needed</p>
+        <h2>Free to Begin, Results Forever</h2>
+
+        <p>Fitness Made Simple</p>
       </div>
 
       <SignIn />
