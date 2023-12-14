@@ -25,7 +25,7 @@ function formattedDate(date) {
     const day = String(dateObj.getDate()).padStart(2, "0");
     const month = String(dateObj.getMonth() + 1).padStart(2, "0");
     const year = String(dateObj.getFullYear());
-    formattedDate = `${day}-${month}-${year}`;
+    formattedDate = `${year}-${month}-${day}`;
   }
 
   return formattedDate;
