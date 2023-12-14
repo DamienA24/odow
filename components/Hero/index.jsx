@@ -8,7 +8,10 @@ function Hero() {
 
   return (
     <div className={styles.containerHero}>
-      <Link href="/app">One Day One Workout</Link>
+      <div className={styles.containerLink}>
+        <Link href="/app">One Day One Workout</Link>
+      </div>
+
       <div className={styles.contentHero}>
         <div className={styles.heroItems}>
           <h1>Workout without equipments</h1>

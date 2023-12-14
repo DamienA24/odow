@@ -16,7 +16,7 @@ function Footer() {
         <section>
           <div className={styles.containerSocialMediaWrap}>
             <Link href="/app">One Day One Workout</Link>
-            <div className={styles.containerIcons}>
+            {/*    <div className={styles.containerIcons}>
               <a
                 href="/"
                 target="_blank"
@@ -41,7 +41,7 @@ function Footer() {
               >
                 <FaTwitter />
               </a>
-            </div>
+            </div> */}
           </div>
         </section>
       </div>
