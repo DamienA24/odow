@@ -15,7 +15,10 @@ export default function MyApp({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="ODOW" />
-        <meta name="description" content="Fitness made simple" />
+        <meta
+          name="description"
+          content="ODOW: Simplify your fitness with a unique workout each day. Perfect for all levels, no equipment needed."
+        />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-config" content="/icons/browserconfig.xml" />
@@ -48,13 +51,19 @@ export default function MyApp({
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="ODOW" />
-        <meta property="og:description" content="Fitness made simple" />
+        <meta
+          property="og:title"
+          content="ONE DAY ONE WORKOUT - Simplify Your Fitness"
+        />
+        <meta
+          property="og:description"
+          content="Join ODOW for effective, accessible daily sessions suitable for everyone."
+        />
         <meta property="og:site_name" content="ODOW" />
         <meta property="og:url" content="https://onedayoneworkout.com" />
         <meta
           property="og:image"
-          content="https://onedayoneworkout.com/icons/DOW.png"
+          content="https://onedayoneworkout.com/icons/arm-512.png"
         />
         <meta
           name="viewport"

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Head from "next/head";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -73,6 +74,10 @@ export default function Workout() {
           : ""
       }
     >
+      <Head>
+        <title>ONE DAY ONE WORKOUT</title>
+        <meta name="robots" content="noindex,nofollow" />
+      </Head>
       {status === "loading" || isLoading ? (
         <Loading />
       ) : workout ? (
