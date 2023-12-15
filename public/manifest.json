@@ -1,52 +1,72 @@
 {
   "name": "One Day One Workout",
   "short_name": "ODOW",
-  "description": "Fitness made simple",
- "icons": [
-  {
-    "src": "icons/icon-72.png",
-    "sizes": "72x72",
-    "type": "image/png"
-  },
-  {
-    "src": "icons/arm-96.png",
-    "sizes": "96x96",
-    "type": "image/png"
-  },
-  {
-    "src": "icons/arm-128.png",
-    "sizes": "128x128",
-    "type": "image/png"
-  },
-  {
-    "src": "icons/arm-144.png",
-    "sizes": "144x144",
-    "type": "image/png"
-  },
-  {
-    "src": "icons/arm-152.png",
-    "sizes": "152x152",
-    "type": "image/png"
-  },
-  {
-    "src": "icons/arm-192.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  },
-  {
-    "src": "icons/arm-384.png",
-    "sizes": "384x384",
-    "type": "image/png"
-  },
-  {
-    "src": "icons/arm-512.png",
-    "sizes": "512x512",
-    "type": "image/png"
-  }
-],
+  "description": "Join ODOW for effective, accessible daily sessions suitable for everyone.",
+  "icons": [
+    {
+      "src": "icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/arm-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/arm-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/arm-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/arm-152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/arm-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/arm-384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/arm-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
   "theme_color": "#c9df6b",
   "background_color": "#000000",
   "start_url": "/app",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "dir": "ltr",
+  "lang": "en",
+  "categories": ["fitness", "health", "sports"],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot1.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/screenshots/screenshot2.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/screenshots/screenshot3.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg"
+    }
+  ]
 }
