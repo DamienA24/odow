@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import styles from "styles/Home.module.scss";
 
@@ -21,6 +22,10 @@ export default function Home() {
   }, []);
   return (
     <div className={styles.containerHome}>
+      <Head>
+        <title>ONE DAY ONE WORKOUT</title>
+        <meta name="robots" content="index,follow" />
+      </Head>
       <Hero />
       <DataHomePage
         heading="Discover the simplicity of staying fit without ever wasting time choosing."

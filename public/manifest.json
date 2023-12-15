@@ -1,6 +1,7 @@
 {
   "name": "One Day One Workout",
   "short_name": "ODOW",
+  "description": "Fitness made simple",
  "icons": [
   {
     "src": "icons/icon-72.png",
