@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.onedayoneworkout.www.twa",
+        "sha256_cert_fingerprints": ["9F:4C:34:EE:E1:CF:0E:95:6A:4F:6C:6A:DF:2B:4D:14:D1:96:8B:F0:F3:7B:62:BB:8A:A6:7C:13:A4:3C:3A:B6"]
+      }
+    }]
