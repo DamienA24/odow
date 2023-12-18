@@ -1,8 +1,13 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "com.onedayoneworkout.www.twa",
-        "sha256_cert_fingerprints": ["9F:4C:34:EE:E1:CF:0E:95:6A:4F:6C:6A:DF:2B:4D:14:D1:96:8B:F0:F3:7B:62:BB:8A:A6:7C:13:A4:3C:3A:B6"]
-      }
-    }]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.onedayoneworkout.www.twa",
+      "sha256_cert_fingerprints": [
+        "9F:4C:34:EE:E1:CF:0E:95:6A:4F:6C:6A:DF:2B:4D:14:D1:96:8B:F0:F3:7B:62:BB:8A:A6:7C:13:A4:3C:3A:B6",
+        "3C:7F:FB:66:82:93:FC:A5:4E:F9:B4:87:F0:24:05:29:3B:03:70:89:8C:C1:44:7F:AF:F3:37:81:78:BC:0D:A5"
+      ]
+    }
+  }
+]
