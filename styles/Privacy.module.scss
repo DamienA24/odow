@@ -1,0 +1,9 @@
+@import "_variables.scss";
+
+.containerPrivacy {
+  padding: 10px;
+  p,
+  li {
+    color: $third-color;
+  }
+}

@@ -5,6 +5,8 @@ import {
   FaTwitter,
   FaLinkedin,
 } from "react-icons/fa";
+import { MdOutlinePrivacyTip } from "react-icons/md";
+
 import Link from "next/link";
 
 import styles from "./styles/Footer.module.scss";
@@ -16,6 +18,14 @@ function Footer() {
         <section>
           <div className={styles.containerSocialMediaWrap}>
             <Link href="/app">One Day One Workout</Link>
+            <a
+              href="/privacy"
+              target="_blank"
+              aria-label="Instagram"
+              rel="noopener noreferrer"
+            >
+              <MdOutlinePrivacyTip />
+            </a>{" "}
             {/*    <div className={styles.containerIcons}>
               <a
                 href="/"
