@@ -132,7 +132,7 @@ export default function privacy() {
       <p>This policy is effective as of 2024-01-08</p> <h2>Contact Us</h2>
       <p>
         If you have any questions or suggestions about my Privacy Policy, do not
-        hesitate to contact me at d.alves@developer@gmail.com
+        hesitate to contact me at onedayonewk@gmail.com
       </p>{" "}
       <p>
         This privacy policy page was created at{" "}
